@@ -12,6 +12,7 @@ This project is built using the following technologies:
 
 - [React](https://reactjs.org/)
 - [React Native](https://reactnative.dev/)
+- [Jotai](https://jotai.org/)
 - [React Native Paper](https://reactnativepaper.com/)
 - [NativeWind](https://www.nativewind.dev/)
 - [Axios](https://axios-http.com/)
