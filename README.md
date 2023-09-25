@@ -1,4 +1,4 @@
-# AYS | Afet Yönetim Sistemi Institution Frontend
+# AYS | Afet Yönetim Sistemi Mobile Applications
 
 ## Description
 
