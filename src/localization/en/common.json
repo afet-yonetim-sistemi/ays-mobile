@@ -2,34 +2,59 @@
 	"translation": {
 		"screens": {
 			"home": "Home",
-			"settings": "Settings",
-			"locationNotAllowed": {
-				"title": "In order for us to view the map, you need to share your location information. Click to share your location information."
+			"settings": {
+				"title": "Settings",
+				"userInformation": {
+					"title": "User Information",
+					"fullName": "Full Name",
+					"institution": "Institution"
+				},
+				"applicationSettings": {
+					"title": "Application Settings",
+					"language": "Language",
+					"darkMode": "Dark Mode",
+					"location": "Location"
+				}
 			},
-			"languageModal": {
-				"title": "Select Language"
+			"locationNotAllowed": {
+				"title": "We need your location information to display the map. Please share your location information by clicking here."
+			},
+			"userAgreementNotAllowed": {
+				"title": "Please accept the user agreement to proceed with the operations.",
+				"subtitle": "I have read and accept the user agreement."
 			},
 			"signIn": {
-				"title": "Sign In",
+				"title": "Welcome",
+				"subtitle": "Please enter your username and password.",
 				"fields": {
 					"username": "Username",
 					"password": "Password",
 					"button": "Sign In"
 				},
 				"errors": {
-					"usernameOrPassword": "Username or password is incorrect"
+					"usernameOrPassword": "Incorrect username or password"
 				}
+			},
+			"languageModal": {
+				"title": "Language Selection"
 			}
 		},
 		"buttons": {
 			"continue": "Continue",
-			"login": "Login",
-			"logout": "Logout",
+			"login": "Log In",
+			"logout": "Log Out",
 			"close": "Close",
 			"cancel": "Cancel",
 			"save": "Save",
 			"ok": "OK",
 			"deleteMyAccount": "Delete My Account"
+		},
+		"errors": {
+			"required": "{{field}} field is required."
+		},
+		"languages": {
+			"tr": "Turkish",
+			"en": "English"
 		}
 	}
 }

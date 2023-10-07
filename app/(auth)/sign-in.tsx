@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 import { useAuth } from 'src/hooks/useAuth';
 
@@ -13,20 +13,21 @@ function SignIn() {
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<LoginBody>({
-		defaultValues: {
-			username: '930047',
-			password: '367894',
-		},
-	});
+	} = useForm<LoginBody>();
 	const { login } = useAuth();
 	const { t } = useTranslation();
 
 	return (
 		<View className="flex flex-1 justify-center items-center w-full p-4 dark:bg-secondary-900">
 			<Card elevation={4} className="w-full p-4 space-y-3 bg-white dark:bg-secondary-500 py-8">
-				<Text variant="titleLarge" className="text-primary-500 dark:text-white text-center pb-2">
+				<View className="flex w-full justify-center items-center">
+					<Image source={require('@/assets/logo-radius.png')} className="w-28 h-28 p-0" />
+				</View>
+				<Text variant="titleLarge" className="text-primary-500 dark:text-white text-center">
 					{t('screens.signIn.title')}
+				</Text>
+				<Text variant="bodyMedium" className="text-primary-500 dark:text-white text-center pb-3">
+					{t('screens.signIn.subtitle')}
 				</Text>
 				<Input
 					name="username"

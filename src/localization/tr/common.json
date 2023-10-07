@@ -24,11 +24,12 @@
 				"subtitle": "Kullanıcı sözleşmesini okudum ve onaylıyorum"
 			},
 			"signIn": {
-				"title": "Giriş Yap",
+				"title": "Hoş Geldiniz",
+				"subtitle": "Lütfen Kullanıcı Adınızı ve Şifrenizi giriniz.",
 				"fields": {
 					"username": "Kullanıcı Adı",
 					"password": "Şifre",
-					"button": "Giriş Yap"
+					"button": "Oturum Aç"
 				},
 				"errors": {
 					"usernameOrPassword": "Kullanıcı adı veya şifre hatalı"
