@@ -1,61 +1,66 @@
-import { View, Pressable, StyleSheet } from "react-native";
-import React from "react";
-import { useAuth } from "src/hooks/useAuth";
-import { LoginBody } from "@/types/index";
-import { Button, Card, Surface, Text, TextInput } from "react-native-paper";
-import { useForm, Controller } from "react-hook-form";
-import { Input } from "@/components/forms/Input";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import { Button, Card, Text } from 'react-native-paper';
+import { useAuth } from 'src/hooks/useAuth';
 
-type Props = {};
+import { Input } from '@/components/forms/Input';
+import { LoginBody } from '@/types/index';
 
-const SignIn = (props: Props) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginBody>();
-  const { login } = useAuth();
-  return (
-    <View className="flex flex-1 justify-center items-center w-full p-4 dark:bg-secondary-900">
-      <Card
-        elevation={4}
-        className="w-full p-4 space-y-3 bg-white dark:bg-secondary-500 py-8"
-      >
-        <Text
-          variant="titleLarge"
-          className="text-primary-500 dark:text-white text-center pb-2"
-        >
-          Giriş Yap
-        </Text>
-        <Input
-          name="username"
-          label="Username"
-          control={control}
-          mode="outlined"
-          rules={{
-            required: "Username is required",
-          }}
-          error={!!errors.username}
-          errorText={errors.username?.message}
-        />
-        <Input
-          name="password"
-          label="Password"
-          control={control}
-          mode="outlined"
-          rules={{
-            required: "Password is required",
-          }}
-          error={!!errors.password}
-          errorText={errors.password?.message}
-          secureTextEntry
-        />
-        <Button onPress={handleSubmit(login)} mode="contained">
-          Login
-        </Button>
-      </Card>
-    </View>
-  );
-};
+function SignIn() {
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<LoginBody>({
+		defaultValues: {
+			username: '930047',
+			password: '367894',
+		},
+	});
+	const { login } = useAuth();
+	const { t } = useTranslation();
+
+	return (
+		<View className="flex flex-1 justify-center items-center w-full p-4 dark:bg-secondary-900">
+			<Card elevation={4} className="w-full p-4 space-y-3 bg-white dark:bg-secondary-500 py-8">
+				<Text variant="titleLarge" className="text-primary-500 dark:text-white text-center pb-2">
+					{t('screens.signIn.title')}
+				</Text>
+				<Input
+					name="username"
+					label={t('screens.signIn.fields.username')}
+					control={control}
+					mode="outlined"
+					rules={{
+						required: t('errors.required', {
+							field: t('screens.signIn.fields.username'),
+						}),
+					}}
+					error={!!errors.username}
+					errorText={errors.username?.message}
+				/>
+				<Input
+					name="password"
+					label={t('screens.signIn.fields.password')}
+					control={control}
+					mode="outlined"
+					rules={{
+						required: t('errors.required', {
+							field: t('screens.signIn.fields.password'),
+						}),
+					}}
+					error={!!errors.password}
+					errorText={errors.password?.message}
+					secureTextEntry
+				/>
+				<Button onPress={handleSubmit(login)} mode="contained">
+					{t('screens.signIn.fields.button').toUpperCase()}
+				</Button>
+			</Card>
+		</View>
+	);
+}
 
 export default SignIn;

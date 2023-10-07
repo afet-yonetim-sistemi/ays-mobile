@@ -1,0 +1,59 @@
+{
+	"translation": {
+		"screens": {
+			"home": "Ana Sayfa",
+			"settings": {
+				"title": "Ayarlar",
+				"userInformation": {
+					"title": "Kullanıcı Bilgileri",
+					"fullName": "Ad Soyad",
+					"institution": "Kurum"
+				},
+				"applicationSettings": {
+					"title": "Uygulama Ayarları",
+					"language": "Dil",
+					"darkMode": "Koyu Görünüş",
+					"location": "Konum"
+				}
+			},
+			"locationNotAllowed": {
+				"title": "Haritayı görüntüleyebilmemiz için konum bilgilerinizi paylaşmanız gerekmektedir. Konum bilgilerinizi paylaşmak için tıklayınız."
+			},
+			"userAgreementNotAllowed": {
+				"title": "İşlemlere Devam Edebilmemiz İçin lütfen kullanıcı sözleşmesini onaylayınız",
+				"subtitle": "Kullanıcı sözleşmesini okudum ve onaylıyorum"
+			},
+			"signIn": {
+				"title": "Giriş Yap",
+				"fields": {
+					"username": "Kullanıcı Adı",
+					"password": "Şifre",
+					"button": "Giriş Yap"
+				},
+				"errors": {
+					"usernameOrPassword": "Kullanıcı adı veya şifre hatalı"
+				}
+			},
+			"languageModal": {
+				"title": "Dil Seçimi"
+			}
+		},
+		"buttons": {
+			"continue": "Devam",
+			"login": "Giriş Yap",
+			"logout": "Çıkış Yap",
+			"close": "Kapat",
+			"cancel": "İptal",
+			"save": "Kaydet",
+			"ok": "Tamam",
+			"deleteMyAccount": "Hesabımı Sil"
+		},
+		"errors": {
+			"required": "{{field}} alanı zorunludur."
+		},
+		"languages": {
+			"tr": "Türkçe",
+			"en": "English"
+		}
+	}
+}

@@ -1,40 +1,61 @@
 {
-  "expo": {
-    "name": "ays-mobile",
-    "slug": "ays-mobile",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/logo.jpg",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/logo.jpg",
-      "resizeMode": "contain",
-      "backgroundColor": "#1c2a3f"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.jpg",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/logo.jpg"
-    },
-    "plugins": [
-      "expo-router"
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "tsconfigPaths": true
-    }
-  }
+	"expo": {
+		"name": "ays-mobile",
+		"slug": "ays-mobile",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/logo.jpg",
+		"scheme": "myapp",
+		"userInterfaceStyle": "automatic",
+		"splash": {
+			"image": "./assets/logo.jpg",
+			"resizeMode": "contain",
+			"backgroundColor": "#1c2a3f"
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.ays.aysmobile"
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/logo.jpg",
+				"backgroundColor": "#ffffff"
+			},
+			"package": "com.ays.aysmobile",
+			"config": {
+				"googleMaps": {
+					"apiKey": "AIzaSyCIvIoDffQhy-y36Gu-Fm9M394MefWRcCs"
+				}
+			}
+		},
+		"web": {
+			"bundler": "metro",
+			"output": "static",
+			"favicon": "./assets/logo.jpg"
+		},
+		"plugins": [
+			"expo-router",
+			[
+				"expo-location",
+				{
+					"locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+				}
+			],
+			"expo-localization"
+		],
+		"experiments": {
+			"typedRoutes": true,
+			"tsconfigPaths": true
+		},
+		"extra": {
+			"router": {
+				"origin": false
+			},
+			"eas": {
+				"projectId": "54d012a8-b90a-4d31-81fd-dc79769159b7"
+			}
+		},
+		"owner": "rasitcolakel"
+	}
 }

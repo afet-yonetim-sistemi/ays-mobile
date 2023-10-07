@@ -1,19 +1,20 @@
-import { View, Text } from "react-native";
-import React, { useCallback, useMemo } from "react";
-import { Button } from "react-native-paper";
-import { useAuth } from "@/hooks/useAuth";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import { Button } from 'react-native-paper';
 
-type Props = {};
+import { useAuth } from '@/hooks/useAuth';
 
-const Footer = (props: Props) => {
-  const { logout } = useAuth();
-  return (
-    <View className="mt-2">
-      <Button textColor="red" onPress={logout}>
-        Logout
-      </Button>
-    </View>
-  );
-};
+function Footer() {
+	const { logout } = useAuth();
+	const { t } = useTranslation();
+	return (
+		<View className="mt-2">
+			<Button textColor="red" onPress={logout}>
+				{t('buttons.logout')}
+			</Button>
+		</View>
+	);
+}
 
 export default Footer;

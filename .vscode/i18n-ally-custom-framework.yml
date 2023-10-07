@@ -1,0 +1,11 @@
+# this file is copied from https://github.com/lokalise/i18n-ally/issues/173#issuecomment-575683163
+languageIds:
+  - javascript
+  - typescript
+  - javascriptreact
+  - typescriptreact
+
+keyMatchReg:
+  - "[^\\w\\d]I18n\\.t\\(['\"`]([[\\w\\d\\. \\-\\[\\]]*?)['\"`]"
+
+monopoly: true

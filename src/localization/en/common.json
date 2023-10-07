@@ -1,0 +1,35 @@
+{
+	"translation": {
+		"screens": {
+			"home": "Home",
+			"settings": "Settings",
+			"locationNotAllowed": {
+				"title": "In order for us to view the map, you need to share your location information. Click to share your location information."
+			},
+			"languageModal": {
+				"title": "Select Language"
+			},
+			"signIn": {
+				"title": "Sign In",
+				"fields": {
+					"username": "Username",
+					"password": "Password",
+					"button": "Sign In"
+				},
+				"errors": {
+					"usernameOrPassword": "Username or password is incorrect"
+				}
+			}
+		},
+		"buttons": {
+			"continue": "Continue",
+			"login": "Login",
+			"logout": "Logout",
+			"close": "Close",
+			"cancel": "Cancel",
+			"save": "Save",
+			"ok": "OK",
+			"deleteMyAccount": "Delete My Account"
+		}
+	}
+}

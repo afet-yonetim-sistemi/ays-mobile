@@ -3,420 +3,1056 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/api/v1/user/{id}": {
-    get: operations["getUserById"];
-    put: operations["updateUser"];
-    delete: operations["deleteUser"];
-  };
-  "/api/v1/user-self/status/support": {
-    put: operations["updateUserSupportStatus"];
-  };
-  "/api/v1/assignment/{id}": {
-    get: operations["getAssignmentById"];
-    put: operations["updateAssignment"];
-    delete: operations["deleteAssignment"];
-  };
-  "/api/v1/users": {
-    post: operations["getUsers"];
-  };
-  "/api/v1/user": {
-    post: operations["saveUser"];
-  };
-  "/api/v1/user/location": {
-    post: operations["saveUserLocation"];
-  };
-  "/api/v1/authentication/token": {
-    post: operations["authenticate"];
-  };
-  "/api/v1/authentication/token/refresh": {
-    post: operations["refreshToken"];
-  };
-  "/api/v1/authentication/token/invalidate": {
-    post: operations["invalidateTokens"];
-  };
-  "/api/v1/authentication/admin/token": {
-    post: operations["authenticate_1"];
-  };
-  "/api/v1/authentication/admin/token/refresh": {
-    post: operations["refreshToken_1"];
-  };
-  "/api/v1/authentication/admin/token/invalidate": {
-    post: operations["invalidateTokens_1"];
-  };
-  "/api/v1/authentication/admin/register": {
-    post: operations["register"];
-  };
-  "/api/v1/assignments": {
-    post: operations["getAssignments"];
-  };
-  "/api/v1/assignment": {
-    post: operations["saveAssignment"];
-  };
-  "/api/v1/assignment/start": {
-    post: operations["startAssignment"];
-  };
-  "/api/v1/assignment/search": {
-    post: operations["searchUserAssignment"];
-  };
-  "/api/v1/assignment/reject": {
-    post: operations["rejectAssignment"];
-  };
-  "/api/v1/assignment/complete": {
-    post: operations["completeAssignment"];
-  };
-  "/api/v1/assignment/approve": {
-    post: operations["approveAssignment"];
-  };
-  "/api/v1/admins": {
-    post: operations["getAdminUsers"];
-  };
+	'/api/v1/user/{id}': {
+		get: operations['getUserById'];
+		put: operations['updateUser'];
+		delete: operations['deleteUser'];
+	};
+	'/api/v1/user-self/status/support': {
+		put: operations['updateUserSupportStatus'];
+	};
+	'/api/v1/assignment/{id}': {
+		get: operations['getAssignmentById'];
+		put: operations['updateAssignment'];
+		delete: operations['deleteAssignment'];
+	};
+	'/api/v1/users': {
+		post: operations['getUsers'];
+	};
+	'/api/v1/user': {
+		post: operations['saveUser'];
+	};
+	'/api/v1/user/location': {
+		post: operations['saveUserLocation'];
+	};
+	'/api/v1/authentication/token': {
+		post: operations['authenticate'];
+	};
+	'/api/v1/authentication/token/refresh': {
+		post: operations['refreshToken'];
+	};
+	'/api/v1/authentication/token/invalidate': {
+		post: operations['invalidateTokens'];
+	};
+	'/api/v1/authentication/admin/token': {
+		post: operations['authenticate_1'];
+	};
+	'/api/v1/authentication/admin/token/refresh': {
+		post: operations['refreshToken_1'];
+	};
+	'/api/v1/authentication/admin/token/invalidate': {
+		post: operations['invalidateTokens_1'];
+	};
+	'/api/v1/authentication/admin/register': {
+		post: operations['register'];
+	};
+	'/api/v1/assignments': {
+		post: operations['getAssignments'];
+	};
+	'/api/v1/assignment': {
+		post: operations['saveAssignment'];
+	};
+	'/api/v1/assignment/start': {
+		post: operations['startAssignment'];
+	};
+	'/api/v1/assignment/search': {
+		post: operations['searchUserAssignment'];
+	};
+	'/api/v1/assignment/reject': {
+		post: operations['rejectAssignment'];
+	};
+	'/api/v1/assignment/complete': {
+		post: operations['completeAssignment'];
+	};
+	'/api/v1/assignment/approve': {
+		post: operations['approveAssignment'];
+	};
+	'/api/v1/admins': {
+		post: operations['getAdminUsers'];
+	};
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
-  schemas: {
-    UserUpdateRequest: {
-      /** @enum {string} */
-      role: "VOLUNTEER";
-      /** @enum {string} */
-      status: "ACTIVE" | "PASSIVE" | "DELETED";
-    };
-    AysResponseVoid: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: Record<string, never>;
-    };
-    UserSupportStatusUpdateRequest: {
-      /** @enum {string} */
-      supportStatus: "IDLE" | "READY" | "BUSY" | "MALFUNCTION" | "ACCIDENT" | "OFFLINE" | "ON_ROAD" | "RETURN";
-    };
-    AssignmentUpdateRequest: {
-      description: string;
-      firstName: string;
-      lastName: string;
-      phoneNumber: components["schemas"]["AysPhoneNumber"];
-      /** Format: double */
-      longitude: number;
-      /** Format: double */
-      latitude: number;
-    };
-    AysPhoneNumber: {
-      countryCode: string;
-      lineNumber: string;
-    };
-    AysPaging: {
-      /** Format: int64 */
-      page: number;
-      /** Format: int64 */
-      pageSize: number;
-    };
-    AysSorting: {
-      property: string;
-      /** @enum {string} */
-      direction: "ASC" | "DESC";
-    };
-    UserListRequest: {
-      sort?: components["schemas"]["AysSorting"][];
-      pagination: components["schemas"]["AysPaging"];
-    };
-    AysFiltering: Record<string, never>;
-    AysPageResponseUsersResponse: {
-      content?: components["schemas"]["UsersResponse"][];
-      /** Format: int32 */
-      pageNumber?: number;
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      totalPageCount?: number;
-      /** Format: int64 */
-      totalElementCount?: number;
-      sortedBy?: components["schemas"]["AysSorting"][];
-      filteredBy?: components["schemas"]["AysFiltering"];
-    };
-    AysResponseAysPageResponseUsersResponse: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: components["schemas"]["AysPageResponseUsersResponse"];
-    };
-    InstitutionResponse: {
-      createdUser?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      updatedUser?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-      id?: string;
-      name?: string;
-    };
-    UsersResponse: {
-      id?: string;
-      username?: string;
-      firstName?: string;
-      lastName?: string;
-      /** @enum {string} */
-      role?: "VOLUNTEER";
-      /** @enum {string} */
-      status?: "ACTIVE" | "PASSIVE" | "DELETED";
-      institution?: components["schemas"]["InstitutionResponse"];
-    };
-    UserSaveRequest: {
-      firstName: string;
-      lastName: string;
-      phoneNumber: components["schemas"]["AysPhoneNumber"];
-    };
-    AysResponseUserSavedResponse: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: components["schemas"]["UserSavedResponse"];
-    };
-    UserSavedResponse: {
-      username?: string;
-      password?: string;
-    };
-    UserLocationSaveRequest: {
-      /** Format: double */
-      longitude: number;
-      /** Format: double */
-      latitude: number;
-    };
-    AysLoginRequest: {
-      username: string;
-      password: string;
-    };
-    AysResponseAysTokenResponse: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: components["schemas"]["AysTokenResponse"];
-    };
-    AysTokenResponse: {
-      accessToken?: string;
-      /** Format: int64 */
-      accessTokenExpiresAt?: number;
-      refreshToken?: string;
-    };
-    AysTokenRefreshRequest: {
-      refreshToken: string;
-    };
-    AysTokenInvalidateRequest: {
-      refreshToken: string;
-    };
-    AdminUserRegisterRequest: {
-      verificationId: string;
-      institutionId: string;
-      username: string;
-      email: string;
-      password: string;
-      phoneNumber: components["schemas"]["AysPhoneNumber"];
-      firstName: string;
-      lastName: string;
-    };
-    AssignmentListRequest: {
-      sort?: components["schemas"]["AysSorting"][];
-      pagination: components["schemas"]["AysPaging"];
-      filter?: components["schemas"]["Filter"];
-    };
-    Filter: {
-      statuses?: ("AVAILABLE" | "RESERVED" | "ASSIGNED" | "IN_PROGRESS" | "DONE")[];
-      phoneNumber?: components["schemas"]["PhoneNumber"];
-    };
-    PhoneNumber: {
-      countryCode?: string;
-      lineNumber?: string;
-    };
-    AssignmentsResponse: {
-      createdUser?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      updatedUser?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-      id?: string;
-      /** @enum {string} */
-      status?: "AVAILABLE" | "RESERVED" | "ASSIGNED" | "IN_PROGRESS" | "DONE";
-      description?: string;
-      firstName?: string;
-      lastName?: string;
-      location?: components["schemas"]["Location"];
-      user?: components["schemas"]["User"];
-    };
-    AysPageResponseAssignmentsResponse: {
-      content?: components["schemas"]["AssignmentsResponse"][];
-      /** Format: int32 */
-      pageNumber?: number;
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      totalPageCount?: number;
-      /** Format: int64 */
-      totalElementCount?: number;
-      sortedBy?: components["schemas"]["AysSorting"][];
-      filteredBy?: components["schemas"]["AysFiltering"];
-    };
-    AysResponseAysPageResponseAssignmentsResponse: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: components["schemas"]["AysPageResponseAssignmentsResponse"];
-    };
-    Location: {
-      /** Format: double */
-      longitude?: number;
-      /** Format: double */
-      latitude?: number;
-    };
-    User: {
-      id?: string;
-      firstName?: string;
-      lastName?: string;
-    };
-    AssignmentSaveRequest: {
-      description: string;
-      firstName: string;
-      lastName: string;
-      phoneNumber: components["schemas"]["AysPhoneNumber"];
-      /** Format: double */
-      longitude: number;
-      /** Format: double */
-      latitude: number;
-    };
-    AssignmentSearchRequest: {
-      /** Format: double */
-      longitude: number;
-      /** Format: double */
-      latitude: number;
-    };
-    AssignmentSearchResponse: {
-      createdUser?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      updatedUser?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-      id?: string;
-      description?: string;
-      location?: components["schemas"]["Location"];
-      /** @enum {string} */
-      status?: "AVAILABLE" | "RESERVED" | "ASSIGNED" | "IN_PROGRESS" | "DONE";
-    };
-    AysResponseAssignmentSearchResponse: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: components["schemas"]["AssignmentSearchResponse"];
-    };
-    AdminUserListRequest: {
-      sort?: components["schemas"]["AysSorting"][];
-      pagination: components["schemas"]["AysPaging"];
-    };
-    AdminUsersResponse: {
-      id?: string;
-      username?: string;
-      firstName?: string;
-      lastName?: string;
-      /** @enum {string} */
-      status?: "NOT_VERIFIED" | "ACTIVE" | "PASSIVE" | "DELETED";
-      institution?: components["schemas"]["InstitutionResponse"];
-    };
-    AysPageResponseAdminUsersResponse: {
-      content?: components["schemas"]["AdminUsersResponse"][];
-      /** Format: int32 */
-      pageNumber?: number;
-      /** Format: int32 */
-      pageSize?: number;
-      /** Format: int32 */
-      totalPageCount?: number;
-      /** Format: int64 */
-      totalElementCount?: number;
-      sortedBy?: components["schemas"]["AysSorting"][];
-      filteredBy?: components["schemas"]["AysFiltering"];
-    };
-    AysResponseAysPageResponseAdminUsersResponse: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: components["schemas"]["AysPageResponseAdminUsersResponse"];
-    };
-    AysResponseUserResponse: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: components["schemas"]["UserResponse"];
-    };
-    UserResponse: {
-      createdUser?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      updatedUser?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-      id?: string;
-      username?: string;
-      firstName?: string;
-      lastName?: string;
-      email?: string;
-      /** @enum {string} */
-      role?: "VOLUNTEER";
-      /** @enum {string} */
-      status?: "ACTIVE" | "PASSIVE" | "DELETED";
-      phoneNumber?: components["schemas"]["AysPhoneNumber"];
-      /** @enum {string} */
-      supportStatus?: "IDLE" | "READY" | "BUSY" | "MALFUNCTION" | "ACCIDENT" | "OFFLINE" | "ON_ROAD" | "RETURN";
-      institution?: components["schemas"]["InstitutionResponse"];
-    };
-    AssignmentResponse: {
-      createdUser?: string;
-      /** Format: date-time */
-      createdAt?: string;
-      updatedUser?: string;
-      /** Format: date-time */
-      updatedAt?: string;
-      id?: string;
-      description?: string;
-      /** @enum {string} */
-      status?: "AVAILABLE" | "RESERVED" | "ASSIGNED" | "IN_PROGRESS" | "DONE";
-      firstName?: string;
-      lastName?: string;
-      phoneNumber?: components["schemas"]["AysPhoneNumber"];
-      location?: components["schemas"]["Location"];
-      user?: components["schemas"]["User"];
-    };
-    AysResponseAssignmentResponse: {
-      /** Format: date-time */
-      time?: string;
-      /** @enum {string} */
-      httpStatus?: "100 CONTINUE" | "101 SWITCHING_PROTOCOLS" | "102 PROCESSING" | "103 EARLY_HINTS" | "103 CHECKPOINT" | "200 OK" | "201 CREATED" | "202 ACCEPTED" | "203 NON_AUTHORITATIVE_INFORMATION" | "204 NO_CONTENT" | "205 RESET_CONTENT" | "206 PARTIAL_CONTENT" | "207 MULTI_STATUS" | "208 ALREADY_REPORTED" | "226 IM_USED" | "300 MULTIPLE_CHOICES" | "301 MOVED_PERMANENTLY" | "302 FOUND" | "302 MOVED_TEMPORARILY" | "303 SEE_OTHER" | "304 NOT_MODIFIED" | "305 USE_PROXY" | "307 TEMPORARY_REDIRECT" | "308 PERMANENT_REDIRECT" | "400 BAD_REQUEST" | "401 UNAUTHORIZED" | "402 PAYMENT_REQUIRED" | "403 FORBIDDEN" | "404 NOT_FOUND" | "405 METHOD_NOT_ALLOWED" | "406 NOT_ACCEPTABLE" | "407 PROXY_AUTHENTICATION_REQUIRED" | "408 REQUEST_TIMEOUT" | "409 CONFLICT" | "410 GONE" | "411 LENGTH_REQUIRED" | "412 PRECONDITION_FAILED" | "413 PAYLOAD_TOO_LARGE" | "413 REQUEST_ENTITY_TOO_LARGE" | "414 URI_TOO_LONG" | "414 REQUEST_URI_TOO_LONG" | "415 UNSUPPORTED_MEDIA_TYPE" | "416 REQUESTED_RANGE_NOT_SATISFIABLE" | "417 EXPECTATION_FAILED" | "418 I_AM_A_TEAPOT" | "419 INSUFFICIENT_SPACE_ON_RESOURCE" | "420 METHOD_FAILURE" | "421 DESTINATION_LOCKED" | "422 UNPROCESSABLE_ENTITY" | "423 LOCKED" | "424 FAILED_DEPENDENCY" | "425 TOO_EARLY" | "426 UPGRADE_REQUIRED" | "428 PRECONDITION_REQUIRED" | "429 TOO_MANY_REQUESTS" | "431 REQUEST_HEADER_FIELDS_TOO_LARGE" | "451 UNAVAILABLE_FOR_LEGAL_REASONS" | "500 INTERNAL_SERVER_ERROR" | "501 NOT_IMPLEMENTED" | "502 BAD_GATEWAY" | "503 SERVICE_UNAVAILABLE" | "504 GATEWAY_TIMEOUT" | "505 HTTP_VERSION_NOT_SUPPORTED" | "506 VARIANT_ALSO_NEGOTIATES" | "507 INSUFFICIENT_STORAGE" | "508 LOOP_DETECTED" | "509 BANDWIDTH_LIMIT_EXCEEDED" | "510 NOT_EXTENDED" | "511 NETWORK_AUTHENTICATION_REQUIRED";
-      isSuccess?: boolean;
-      response?: components["schemas"]["AssignmentResponse"];
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+	schemas: {
+		UserUpdateRequest: {
+			/** @enum {string} */
+			role: 'VOLUNTEER';
+			/** @enum {string} */
+			status: 'ACTIVE' | 'PASSIVE' | 'DELETED';
+		};
+		AysResponseVoid: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: Record<string, never>;
+		};
+		UserSupportStatusUpdateRequest: {
+			/** @enum {string} */
+			supportStatus:
+				| 'IDLE'
+				| 'READY'
+				| 'BUSY'
+				| 'MALFUNCTION'
+				| 'ACCIDENT'
+				| 'OFFLINE'
+				| 'ON_ROAD'
+				| 'RETURN';
+		};
+		AssignmentUpdateRequest: {
+			description: string;
+			firstName: string;
+			lastName: string;
+			phoneNumber: components['schemas']['AysPhoneNumber'];
+			/** Format: double */
+			longitude: number;
+			/** Format: double */
+			latitude: number;
+		};
+		AysPhoneNumber: {
+			countryCode: string;
+			lineNumber: string;
+		};
+		AysPaging: {
+			/** Format: int64 */
+			page: number;
+			/** Format: int64 */
+			pageSize: number;
+		};
+		AysSorting: {
+			property: string;
+			/** @enum {string} */
+			direction: 'ASC' | 'DESC';
+		};
+		UserListRequest: {
+			sort?: components['schemas']['AysSorting'][];
+			pagination: components['schemas']['AysPaging'];
+		};
+		AysFiltering: Record<string, never>;
+		AysPageResponseUsersResponse: {
+			content?: components['schemas']['UsersResponse'][];
+			/** Format: int32 */
+			pageNumber?: number;
+			/** Format: int32 */
+			pageSize?: number;
+			/** Format: int32 */
+			totalPageCount?: number;
+			/** Format: int64 */
+			totalElementCount?: number;
+			sortedBy?: components['schemas']['AysSorting'][];
+			filteredBy?: components['schemas']['AysFiltering'];
+		};
+		AysResponseAysPageResponseUsersResponse: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: components['schemas']['AysPageResponseUsersResponse'];
+		};
+		InstitutionResponse: {
+			createdUser?: string;
+			/** Format: date-time */
+			createdAt?: string;
+			updatedUser?: string;
+			/** Format: date-time */
+			updatedAt?: string;
+			id?: string;
+			name?: string;
+		};
+		UsersResponse: {
+			id?: string;
+			username?: string;
+			firstName?: string;
+			lastName?: string;
+			/** @enum {string} */
+			role?: 'VOLUNTEER';
+			/** @enum {string} */
+			status?: 'ACTIVE' | 'PASSIVE' | 'DELETED';
+			institution?: components['schemas']['InstitutionResponse'];
+		};
+		UserSaveRequest: {
+			firstName: string;
+			lastName: string;
+			phoneNumber: components['schemas']['AysPhoneNumber'];
+		};
+		AysResponseUserSavedResponse: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: components['schemas']['UserSavedResponse'];
+		};
+		UserSavedResponse: {
+			username?: string;
+			password?: string;
+		};
+		UserLocationSaveRequest: {
+			/** Format: double */
+			longitude: number;
+			/** Format: double */
+			latitude: number;
+		};
+		AysLoginRequest: {
+			username: string;
+			password: string;
+		};
+		AysResponseAysTokenResponse: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: components['schemas']['AysTokenResponse'];
+		};
+		AysTokenResponse: {
+			accessToken?: string;
+			/** Format: int64 */
+			accessTokenExpiresAt?: number;
+			refreshToken?: string;
+		};
+		AysTokenRefreshRequest: {
+			refreshToken: string;
+		};
+		AysTokenInvalidateRequest: {
+			refreshToken: string;
+		};
+		AdminUserRegisterRequest: {
+			verificationId: string;
+			institutionId: string;
+			username: string;
+			email: string;
+			password: string;
+			phoneNumber: components['schemas']['AysPhoneNumber'];
+			firstName: string;
+			lastName: string;
+		};
+		AssignmentListRequest: {
+			sort?: components['schemas']['AysSorting'][];
+			pagination: components['schemas']['AysPaging'];
+			filter?: components['schemas']['Filter'];
+		};
+		Filter: {
+			statuses?: ('AVAILABLE' | 'RESERVED' | 'ASSIGNED' | 'IN_PROGRESS' | 'DONE')[];
+			phoneNumber?: components['schemas']['PhoneNumber'];
+		};
+		PhoneNumber: {
+			countryCode?: string;
+			lineNumber?: string;
+		};
+		AssignmentsResponse: {
+			createdUser?: string;
+			/** Format: date-time */
+			createdAt?: string;
+			updatedUser?: string;
+			/** Format: date-time */
+			updatedAt?: string;
+			id?: string;
+			/** @enum {string} */
+			status?: 'AVAILABLE' | 'RESERVED' | 'ASSIGNED' | 'IN_PROGRESS' | 'DONE';
+			description?: string;
+			firstName?: string;
+			lastName?: string;
+			location?: components['schemas']['Location'];
+			user?: components['schemas']['User'];
+		};
+		AysPageResponseAssignmentsResponse: {
+			content?: components['schemas']['AssignmentsResponse'][];
+			/** Format: int32 */
+			pageNumber?: number;
+			/** Format: int32 */
+			pageSize?: number;
+			/** Format: int32 */
+			totalPageCount?: number;
+			/** Format: int64 */
+			totalElementCount?: number;
+			sortedBy?: components['schemas']['AysSorting'][];
+			filteredBy?: components['schemas']['AysFiltering'];
+		};
+		AysResponseAysPageResponseAssignmentsResponse: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: components['schemas']['AysPageResponseAssignmentsResponse'];
+		};
+		Location: {
+			/** Format: double */
+			longitude?: number;
+			/** Format: double */
+			latitude?: number;
+		};
+		User: {
+			id?: string;
+			firstName?: string;
+			lastName?: string;
+		};
+		AssignmentSaveRequest: {
+			description: string;
+			firstName: string;
+			lastName: string;
+			phoneNumber: components['schemas']['AysPhoneNumber'];
+			/** Format: double */
+			longitude: number;
+			/** Format: double */
+			latitude: number;
+		};
+		AssignmentSearchRequest: {
+			/** Format: double */
+			longitude: number;
+			/** Format: double */
+			latitude: number;
+		};
+		AssignmentSearchResponse: {
+			createdUser?: string;
+			/** Format: date-time */
+			createdAt?: string;
+			updatedUser?: string;
+			/** Format: date-time */
+			updatedAt?: string;
+			id?: string;
+			description?: string;
+			location?: components['schemas']['Location'];
+			/** @enum {string} */
+			status?: 'AVAILABLE' | 'RESERVED' | 'ASSIGNED' | 'IN_PROGRESS' | 'DONE';
+		};
+		AysResponseAssignmentSearchResponse: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: components['schemas']['AssignmentSearchResponse'];
+		};
+		AdminUserListRequest: {
+			sort?: components['schemas']['AysSorting'][];
+			pagination: components['schemas']['AysPaging'];
+		};
+		AdminUsersResponse: {
+			id?: string;
+			username?: string;
+			firstName?: string;
+			lastName?: string;
+			/** @enum {string} */
+			status?: 'NOT_VERIFIED' | 'ACTIVE' | 'PASSIVE' | 'DELETED';
+			institution?: components['schemas']['InstitutionResponse'];
+		};
+		AysPageResponseAdminUsersResponse: {
+			content?: components['schemas']['AdminUsersResponse'][];
+			/** Format: int32 */
+			pageNumber?: number;
+			/** Format: int32 */
+			pageSize?: number;
+			/** Format: int32 */
+			totalPageCount?: number;
+			/** Format: int64 */
+			totalElementCount?: number;
+			sortedBy?: components['schemas']['AysSorting'][];
+			filteredBy?: components['schemas']['AysFiltering'];
+		};
+		AysResponseAysPageResponseAdminUsersResponse: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: components['schemas']['AysPageResponseAdminUsersResponse'];
+		};
+		AysResponseUserResponse: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: components['schemas']['UserResponse'];
+		};
+		UserResponse: {
+			createdUser?: string;
+			/** Format: date-time */
+			createdAt?: string;
+			updatedUser?: string;
+			/** Format: date-time */
+			updatedAt?: string;
+			id?: string;
+			username?: string;
+			firstName?: string;
+			lastName?: string;
+			email?: string;
+			/** @enum {string} */
+			role?: 'VOLUNTEER';
+			/** @enum {string} */
+			status?: 'ACTIVE' | 'PASSIVE' | 'DELETED';
+			phoneNumber?: components['schemas']['AysPhoneNumber'];
+			/** @enum {string} */
+			supportStatus?:
+				| 'IDLE'
+				| 'READY'
+				| 'BUSY'
+				| 'MALFUNCTION'
+				| 'ACCIDENT'
+				| 'OFFLINE'
+				| 'ON_ROAD'
+				| 'RETURN';
+			institution?: components['schemas']['InstitutionResponse'];
+		};
+		AssignmentResponse: {
+			createdUser?: string;
+			/** Format: date-time */
+			createdAt?: string;
+			updatedUser?: string;
+			/** Format: date-time */
+			updatedAt?: string;
+			id?: string;
+			description?: string;
+			/** @enum {string} */
+			status?: 'AVAILABLE' | 'RESERVED' | 'ASSIGNED' | 'IN_PROGRESS' | 'DONE';
+			firstName?: string;
+			lastName?: string;
+			phoneNumber?: components['schemas']['AysPhoneNumber'];
+			location?: components['schemas']['Location'];
+			user?: components['schemas']['User'];
+		};
+		AysResponseAssignmentResponse: {
+			/** Format: date-time */
+			time?: string;
+			/** @enum {string} */
+			httpStatus?:
+				| '100 CONTINUE'
+				| '101 SWITCHING_PROTOCOLS'
+				| '102 PROCESSING'
+				| '103 EARLY_HINTS'
+				| '103 CHECKPOINT'
+				| '200 OK'
+				| '201 CREATED'
+				| '202 ACCEPTED'
+				| '203 NON_AUTHORITATIVE_INFORMATION'
+				| '204 NO_CONTENT'
+				| '205 RESET_CONTENT'
+				| '206 PARTIAL_CONTENT'
+				| '207 MULTI_STATUS'
+				| '208 ALREADY_REPORTED'
+				| '226 IM_USED'
+				| '300 MULTIPLE_CHOICES'
+				| '301 MOVED_PERMANENTLY'
+				| '302 FOUND'
+				| '302 MOVED_TEMPORARILY'
+				| '303 SEE_OTHER'
+				| '304 NOT_MODIFIED'
+				| '305 USE_PROXY'
+				| '307 TEMPORARY_REDIRECT'
+				| '308 PERMANENT_REDIRECT'
+				| '400 BAD_REQUEST'
+				| '401 UNAUTHORIZED'
+				| '402 PAYMENT_REQUIRED'
+				| '403 FORBIDDEN'
+				| '404 NOT_FOUND'
+				| '405 METHOD_NOT_ALLOWED'
+				| '406 NOT_ACCEPTABLE'
+				| '407 PROXY_AUTHENTICATION_REQUIRED'
+				| '408 REQUEST_TIMEOUT'
+				| '409 CONFLICT'
+				| '410 GONE'
+				| '411 LENGTH_REQUIRED'
+				| '412 PRECONDITION_FAILED'
+				| '413 PAYLOAD_TOO_LARGE'
+				| '413 REQUEST_ENTITY_TOO_LARGE'
+				| '414 URI_TOO_LONG'
+				| '414 REQUEST_URI_TOO_LONG'
+				| '415 UNSUPPORTED_MEDIA_TYPE'
+				| '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+				| '417 EXPECTATION_FAILED'
+				| '418 I_AM_A_TEAPOT'
+				| '419 INSUFFICIENT_SPACE_ON_RESOURCE'
+				| '420 METHOD_FAILURE'
+				| '421 DESTINATION_LOCKED'
+				| '422 UNPROCESSABLE_ENTITY'
+				| '423 LOCKED'
+				| '424 FAILED_DEPENDENCY'
+				| '425 TOO_EARLY'
+				| '426 UPGRADE_REQUIRED'
+				| '428 PRECONDITION_REQUIRED'
+				| '429 TOO_MANY_REQUESTS'
+				| '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+				| '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+				| '500 INTERNAL_SERVER_ERROR'
+				| '501 NOT_IMPLEMENTED'
+				| '502 BAD_GATEWAY'
+				| '503 SERVICE_UNAVAILABLE'
+				| '504 GATEWAY_TIMEOUT'
+				| '505 HTTP_VERSION_NOT_SUPPORTED'
+				| '506 VARIANT_ALSO_NEGOTIATES'
+				| '507 INSUFFICIENT_STORAGE'
+				| '508 LOOP_DETECTED'
+				| '509 BANDWIDTH_LIMIT_EXCEEDED'
+				| '510 NOT_EXTENDED'
+				| '511 NETWORK_AUTHENTICATION_REQUIRED';
+			isSuccess?: boolean;
+			response?: components['schemas']['AssignmentResponse'];
+		};
+	};
+	responses: never;
+	parameters: never;
+	requestBodies: never;
+	headers: never;
+	pathItems: never;
 }
 
 export type $defs = Record<string, never>;
@@ -424,370 +1060,369 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-
-  getUserById: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseUserResponse"];
-        };
-      };
-    };
-  };
-  updateUser: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserUpdateRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  deleteUser: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  updateUserSupportStatus: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserSupportStatusUpdateRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  getAssignmentById: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAssignmentResponse"];
-        };
-      };
-    };
-  };
-  updateAssignment: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AssignmentUpdateRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  deleteAssignment: {
-    parameters: {
-      path: {
-        id: string;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  getUsers: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserListRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAysPageResponseUsersResponse"];
-        };
-      };
-    };
-  };
-  saveUser: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserSaveRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseUserSavedResponse"];
-        };
-      };
-    };
-  };
-  saveUserLocation: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserLocationSaveRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  authenticate: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AysLoginRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAysTokenResponse"];
-        };
-      };
-    };
-  };
-  refreshToken: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AysTokenRefreshRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAysTokenResponse"];
-        };
-      };
-    };
-  };
-  invalidateTokens: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AysTokenInvalidateRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  authenticate_1: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AysLoginRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAysTokenResponse"];
-        };
-      };
-    };
-  };
-  refreshToken_1: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AysTokenRefreshRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAysTokenResponse"];
-        };
-      };
-    };
-  };
-  invalidateTokens_1: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AysTokenInvalidateRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  register: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AdminUserRegisterRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  getAssignments: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AssignmentListRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAysPageResponseAssignmentsResponse"];
-        };
-      };
-    };
-  };
-  saveAssignment: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AssignmentSaveRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  startAssignment: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  searchUserAssignment: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AssignmentSearchRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAssignmentSearchResponse"];
-        };
-      };
-    };
-  };
-  rejectAssignment: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  completeAssignment: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  approveAssignment: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseVoid"];
-        };
-      };
-    };
-  };
-  getAdminUsers: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AdminUserListRequest"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["AysResponseAysPageResponseAdminUsersResponse"];
-        };
-      };
-    };
-  };
+	getUserById: {
+		parameters: {
+			path: {
+				id: string;
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseUserResponse'];
+				};
+			};
+		};
+	};
+	updateUser: {
+		parameters: {
+			path: {
+				id: string;
+			};
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['UserUpdateRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	deleteUser: {
+		parameters: {
+			path: {
+				id: string;
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	updateUserSupportStatus: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['UserSupportStatusUpdateRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	getAssignmentById: {
+		parameters: {
+			path: {
+				id: string;
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAssignmentResponse'];
+				};
+			};
+		};
+	};
+	updateAssignment: {
+		parameters: {
+			path: {
+				id: string;
+			};
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AssignmentUpdateRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	deleteAssignment: {
+		parameters: {
+			path: {
+				id: string;
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	getUsers: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['UserListRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAysPageResponseUsersResponse'];
+				};
+			};
+		};
+	};
+	saveUser: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['UserSaveRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseUserSavedResponse'];
+				};
+			};
+		};
+	};
+	saveUserLocation: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['UserLocationSaveRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	authenticate: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AysLoginRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAysTokenResponse'];
+				};
+			};
+		};
+	};
+	refreshToken: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AysTokenRefreshRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAysTokenResponse'];
+				};
+			};
+		};
+	};
+	invalidateTokens: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AysTokenInvalidateRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	authenticate_1: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AysLoginRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAysTokenResponse'];
+				};
+			};
+		};
+	};
+	refreshToken_1: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AysTokenRefreshRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAysTokenResponse'];
+				};
+			};
+		};
+	};
+	invalidateTokens_1: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AysTokenInvalidateRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	register: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AdminUserRegisterRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	getAssignments: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AssignmentListRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAysPageResponseAssignmentsResponse'];
+				};
+			};
+		};
+	};
+	saveAssignment: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AssignmentSaveRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	startAssignment: {
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	searchUserAssignment: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AssignmentSearchRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAssignmentSearchResponse'];
+				};
+			};
+		};
+	};
+	rejectAssignment: {
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	completeAssignment: {
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	approveAssignment: {
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseVoid'];
+				};
+			};
+		};
+	};
+	getAdminUsers: {
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AdminUserListRequest'];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				content: {
+					'*/*': components['schemas']['AysResponseAysPageResponseAdminUsersResponse'];
+				};
+			};
+		};
+	};
 }

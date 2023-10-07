@@ -1,48 +1,36 @@
 // CustomDrawer.tsx
-import { useHeights } from "@/hooks/useHeights";
-import {
-  DrawerContentComponentProps,
-  DrawerItemList,
-} from "@react-navigation/drawer";
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Divider } from "react-native-paper";
-import ProfileArea from "./ProfileArea";
-import Footer from "./Footer";
-type Props = DrawerContentComponentProps & {};
+import { DrawerContentComponentProps, DrawerItemList } from '@react-navigation/drawer';
+import React from 'react';
+import { View } from 'react-native';
+import { Divider } from 'react-native-paper';
+
+import { useHeights } from '@/hooks/useHeights';
+import Footer from '@/screens/drawer/Footer';
+import ProfileArea from '@/screens/drawer/ProfileArea';
+
+type Props = DrawerContentComponentProps & object;
 
 const CustomDrawer: React.FC<Props> = (props) => {
-  const { statusBarHeight, bottomTabBarHeight } = useHeights();
+	const { statusBarHeight, bottomTabBarHeight } = useHeights();
+	const marginBottom = bottomTabBarHeight ? bottomTabBarHeight - 8 : 8;
 
-  return (
-    <View
-      className={`flex-1`}
-      style={{
-        marginBottom: bottomTabBarHeight,
-        marginTop: statusBarHeight,
-      }}
-    >
-      <ProfileArea />
-      <Divider />
-      <View className="flex-1 my-2">
-        <DrawerItemList {...props} />
-      </View>
-      <Divider />
-      <Footer />
-    </View>
-  );
+	return (
+		<View
+			className="flex-1"
+			style={{
+				marginBottom,
+				marginTop: statusBarHeight,
+			}}
+		>
+			<ProfileArea />
+			<Divider />
+			<View className="flex-1 my-2">
+				<DrawerItemList {...props} />
+			</View>
+			<Divider />
+			<Footer />
+		</View>
+	);
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  items: {
-    flex: 1,
-  },
-  footer: {
-    marginBottom: 20,
-  },
-});
 
 export default CustomDrawer;
