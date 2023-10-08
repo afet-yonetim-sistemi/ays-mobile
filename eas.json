@@ -8,7 +8,21 @@
 			"distribution": "internal"
 		},
 		"preview": {
-			"distribution": "internal"
+			"distribution": "internal",
+			"android": {
+				"buildType": "apk"
+			}
+		},
+		"pre-prod": {
+			"env": {
+				"EXPO_PUBLIC_TOKEN_KEY": "token",
+				"EXPO_PUBLIC_API_URL": "https://test-servis.afetyonetimsistemi.com/api/v1",
+				"OPEN_API_URL": "https://test-servis.afetyonetimsistemi.com/public/api/docs"
+			},
+			"android": {
+				"gradleCommand": ":app:assembleRelease",
+				"buildType": "apk"
+			}
 		},
 		"production": {}
 	},
