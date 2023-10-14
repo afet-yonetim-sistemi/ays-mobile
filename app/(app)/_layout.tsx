@@ -18,7 +18,7 @@ export default function TabLayout() {
 			<Drawer.Screen
 				name="index"
 				options={{
-					title: t('screens.home'),
+					title: t('screens.home.title'),
 				}}
 			/>
 			<Drawer.Screen

@@ -1,7 +1,13 @@
 {
 	"translation": {
 		"screens": {
-			"home": "Home",
+			"home": {
+				"title": "Home",
+				"assignmentSheet": {
+					"approve": "Approve",
+					"reject": "Reject"
+				}
+			},
 			"settings": {
 				"title": "Settings",
 				"userInformation": {

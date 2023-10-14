@@ -1,12 +1,8 @@
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode';
 
+import ENV from '@/constants/env';
 import { AuthUser } from '@/types/index';
-
-const ENV = {
-	API_URL: process.env.EXPO_PUBLIC_API_URL ?? '',
-	TOKEN_KEY: process.env.EXPO_PUBLIC_TOKEN_KEY ?? '',
-};
 
 const removeTokens = async () => {
 	await SecureStore.deleteItemAsync(ENV.TOKEN_KEY);

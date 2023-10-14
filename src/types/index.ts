@@ -14,6 +14,8 @@ export type InvalidatePath = paths['/api/v1/authentication/token/invalidate']['p
 export type InvalidateBody = components['schemas']['AysTokenInvalidateRequest'];
 export type InvalidateResponse = components['schemas']['AysTokenInvalidateRequest'];
 
+export type Assignment = components['schemas']['AssignmentsResponse'];
+
 export type AuthUser = {
 	jti: string;
 	iss: string;

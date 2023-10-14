@@ -1,7 +1,13 @@
 {
 	"translation": {
 		"screens": {
-			"home": "Ana Sayfa",
+			"home": {
+				"title": "Ana Sayfa",
+				"assignmentSheet": {
+					"approve": "Kabul Et",
+					"reject": "Reddet"
+				}
+			},
 			"settings": {
 				"title": "Ayarlar",
 				"userInformation": {

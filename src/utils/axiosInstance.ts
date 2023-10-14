@@ -2,21 +2,12 @@
 import axios, { AxiosInstance } from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
+import ENV from '@/constants/env';
 import { invalidateUrl, loginUrl, refreshTokenUrl } from '@/services/endpoints';
 import { tokenService } from '@/services/token';
 import { RefreshTokenResponse } from '@/types/index';
 
 // Create an instance of Snackbar
-
-type ENVTypes = {
-	API_URL: string;
-	TOKEN_KEY: string;
-};
-
-const ENV: ENVTypes = {
-	API_URL: process.env.EXPO_PUBLIC_API_URL ?? '',
-	TOKEN_KEY: process.env.EXPO_PUBLIC_TOKEN_KEY ?? '',
-};
 
 // Axios instance
 const axiosInstance: AxiosInstance = axios.create({

@@ -31,6 +31,7 @@ class AuthService {
 
 	async getUserAgreement(): Promise<boolean> {
 		const userAgreement = await SecureStore.getItemAsync('userAgreement');
+		console.log('userAgreement', !!userAgreement);
 
 		return !!userAgreement;
 	}
