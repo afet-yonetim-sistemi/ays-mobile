@@ -28,6 +28,12 @@ This project is built using the following technologies:
 git clone https://github.com/afet-yonetim-sistemi/ays-mobile.git
 ```
 
+### Set The Environment
+
+You can use the .env.example file to set the environment
+
+Also, you need to provide your EXPO_PUBLIC_GOOGLE_API_KEY. On you GCP account, you must enable `Maps SDK for iOS`, `Maps SDK for Android` and `Directions API`
+
 ###  Install dependencies
 
 ```bash

@@ -15,7 +15,7 @@
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.ays.aysmobile",
+			"bundleIdentifier": "com.aysmobile",
 			"infoPlist": {
 				"UIBackgroundModes": ["location", "fetch"]
 			}
@@ -32,10 +32,10 @@
 				"foregroundImage": "./assets/logo.jpg",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.ays.aysmobile",
+			"package": "com.aysmobile",
 			"config": {
 				"googleMaps": {
-					"apiKey": "AIzaSyD-9yOsV22jiBjtkmgATPTX2N__0JVKjdc"
+					"apiKey": "AIzaSyDc42iUvjQOKifsNPslmMyiBfdBlPw4ReU"
 				}
 			}
 		},

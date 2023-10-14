@@ -5,26 +5,32 @@
 	"build": {
 		"development": {
 			"developmentClient": true,
-			"distribution": "internal"
-		},
-		"preview": {
 			"distribution": "internal",
-			"android": {
-				"buildType": "apk"
+			"env": {
+				"NODE_ENV": "development"
 			}
 		},
-		"pre-prod": {
-			"env": {
-				"EXPO_PUBLIC_TOKEN_KEY": "token",
-				"EXPO_PUBLIC_API_URL": "https://test-servis.afetyonetimsistemi.com/api/v1",
-				"OPEN_API_URL": "https://test-servis.afetyonetimsistemi.com/public/api/docs"
-			},
+		"pre": {
 			"android": {
 				"gradleCommand": ":app:assembleRelease",
 				"buildType": "apk"
+			},
+			"env": {
+				"MY_ENV": "pre",
+				"APP_SLUG": "pre",
+				"APP_NAME": "AYS - PRE"
 			}
 		},
-		"production": {}
+		"production": {
+			"android": {
+				"gradleCommand": ":app:assembleRelease",
+				"buildType": "apk"
+			},
+			"env": {
+				"MY_ENV": "production",
+				"APP_NAME": "AYS"
+			}
+		}
 	},
 	"submit": {
 		"production": {}
