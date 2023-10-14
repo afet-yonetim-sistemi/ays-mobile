@@ -5,7 +5,7 @@ import { Slot, SplashScreen } from 'expo-router';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppState, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -81,20 +81,6 @@ export default function RootLayout() {
 			SplashScreen.hideAsync();
 		}
 	}, [loaded, languageLoaded, userAgreement.loaded, permissions.loaded]);
-
-	useEffect(() => {
-		const subscription = AppState.addEventListener('change', (nextAppState) => {
-			if (nextAppState === 'active') {
-				checkLocationPermissions();
-			}
-		});
-		const locationPermissionCheckTimer = setInterval(checkLocationPermissions, 60000);
-		// Cleanup on unmount
-		return () => {
-			subscription.remove();
-			clearInterval(locationPermissionCheckTimer);
-		};
-	}, []);
 
 	if (!loaded && !languageLoaded) {
 		return null;
