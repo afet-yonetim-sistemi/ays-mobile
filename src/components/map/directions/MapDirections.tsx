@@ -5,17 +5,19 @@ import MapViewDirections, { MapDirectionsResponse } from 'react-native-maps-dire
 
 import Colors from '@/constants/Colors';
 import ENV from '@/constants/env';
-import { destinationAtom, originAtom } from '@/stores/assignment';
+import { AssignmentTracking, destinationAtom, originAtom } from '@/stores/assignment';
 
 type Props = {
 	setDirectionCoordinates: (_: any) => void;
+	setDetail: (_value: AssignmentTracking['detail']) => void;
 };
 
-export default function MapDirections({ setDirectionCoordinates }: Props) {
+export default function MapDirections({ setDirectionCoordinates, setDetail }: Props) {
 	const origin = useAtomValue(originAtom);
 	const destination = useAtomValue(destinationAtom);
 
 	const onReady = (result: MapDirectionsResponse) => {
+		setDetail(result.legs[0]);
 		setDirectionCoordinates(result.coordinates);
 	};
 

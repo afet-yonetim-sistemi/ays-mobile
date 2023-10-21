@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import React, { useCallback, useMemo } from 'react';
 import { Alert, View } from 'react-native';
 import { ActivityIndicator, IconButton } from 'react-native-paper';
@@ -22,7 +22,7 @@ const AssignmentControls = () => {
 	const assignment = useAtomValue(assignmentAtom);
 	const isLoading = useAtomValue(isLoadingAtom);
 	const setAssignmentTracking = useSetAtom(assignmentTrackingAtom);
-	const [location] = useAtom(locationAtom);
+	const location = useAtomValue(locationAtom);
 
 	const onSearch = useCallback(async () => {
 		if (location) {
@@ -33,6 +33,7 @@ const AssignmentControls = () => {
 			if (response) {
 				await setAssignmentTracking((prev: AssignmentTracking) => ({
 					...prev,
+					origin: location,
 					assignment: {
 						...response,
 						status: AssignmentStatus.RESERVED,

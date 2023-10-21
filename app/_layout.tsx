@@ -2,8 +2,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen } from 'expo-router';
-import { useAtom } from 'jotai';
-import { useEffect, useState } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppState, useColorScheme } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
@@ -20,6 +20,7 @@ import AuthProvider from '@/hooks/useAuth';
 import { getLanguage } from '@/localization/index';
 import { authService } from '@/services/auth';
 import { locationService } from '@/services/location';
+import { isAuthenticatedAtom } from '@/stores/auth';
 import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
 
 export {
@@ -37,12 +38,24 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
+	return (
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<RootLayoutNav />
+			</AuthProvider>
+		</QueryClientProvider>
+	);
+}
+
+function RootLayoutNav() {
+	const colorScheme = useColorScheme();
+	const isAuthenticated = useAtomValue(isAuthenticatedAtom);
+
 	const { i18n } = useTranslation();
 	const [loaded, error] = useFonts({
 		SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
 		...FontAwesome.font,
 	});
-
 	const [languageLoaded, setLanguageLoaded] = useState(false);
 	const [permissions, setPermissions] = useAtom(permissionsAtom);
 	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
@@ -57,6 +70,7 @@ export default function RootLayout() {
 
 	const checkLocationPermissions = async () => {
 		const status = await locationService.checkLocationPermission();
+		console.log('checkLocationPermissions', status);
 		setPermissions((prev) => ({ ...prev, location: status, loaded: true }));
 
 		if (status) {
@@ -75,29 +89,42 @@ export default function RootLayout() {
 		setUserAgreement({ ...userAgreement, accepted: !!status, loaded: true });
 	};
 
+	const initializeApp = async () => {
+		await setLocalLanguage();
+		await checkUserAgreement();
+		await checkLocationPermissions();
+	};
+
 	useEffect(() => {
-		setLocalLanguage();
-		checkUserAgreement();
-		checkLocationPermissions();
+		initializeApp();
 	}, []);
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			initializeApp();
+		}
+	}, [isAuthenticated]);
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {
 		if (error) throw error;
 	}, [error]);
 
+	const isSplashScreenHidden = useMemo(() => {
+		return loaded && languageLoaded && userAgreement.loaded && permissions.loaded;
+	}, [loaded, languageLoaded, userAgreement.loaded, permissions.loaded]);
+
 	useEffect(() => {
-		if (loaded && languageLoaded && userAgreement.loaded && permissions.loaded) {
+		if (isSplashScreenHidden) {
 			SplashScreen.hideAsync();
 		}
-	}, [loaded, languageLoaded, userAgreement.loaded, permissions.loaded]);
+	}, [isSplashScreenHidden]);
 
 	useEffect(() => {
 		const subscription = AppState.addEventListener('change', (nextAppState: string) => {
 			if (nextAppState === 'active') {
 				checkLocationPermissions();
 			}
-
 			subscription.remove();
 		});
 	}, []);
@@ -105,18 +132,6 @@ export default function RootLayout() {
 	if (!loaded && !languageLoaded) {
 		return null;
 	}
-
-	return (
-		<QueryClientProvider client={queryClient}>
-			<AuthProvider>
-				<RootLayoutNav />
-			</AuthProvider>
-		</QueryClientProvider>
-	);
-}
-
-function RootLayoutNav() {
-	const colorScheme = useColorScheme();
 
 	return (
 		<ThemeProvider value={colorScheme === 'dark' ? navigationDarkTheme : navigationLightTheme}>

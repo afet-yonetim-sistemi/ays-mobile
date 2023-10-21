@@ -17,22 +17,24 @@ import {
 	assignmentAtom,
 	assignmentTrackingAtom,
 	defaultAssignmentTracking,
+	detailAtom,
 	isLoadingAtom,
 } from '@/stores/assignment';
 import { locationAtom } from '@/stores/location';
 import { sleep } from '@/utils';
 
-const TIMEOUT_SECONDS = 5;
+const TIMEOUT_SECONDS = 120;
 
 const AssignmentSheet = () => {
 	const assignment = useAtomValue(assignmentAtom);
+	const detail = useAtomValue(detailAtom);
 	const location = useAtomValue(locationAtom);
 	const isLoading = useAtomValue(isLoadingAtom);
 	const setAssignmentTracking = useSetAtom(assignmentTrackingAtom);
 	const { t } = useTranslation();
 	const bottomSheetRef = useRef<BottomSheet>(null);
 
-	const snapPoints = useMemo(() => ['30%', '50%', '85%'], []);
+	const snapPoints = useMemo(() => ['30%', '70%', '85%'], []);
 
 	const handleSheetChanges = useCallback((index: number) => {
 		console.log('handleSheetChanges', index);
@@ -174,16 +176,45 @@ const AssignmentSheet = () => {
 						/>
 					)}
 				</View>
-				<View className="flex-1">
-					<Text className="text-black dark:text-white text-base py-2">
-						{t('screens.home.assignmentSheet.description')}
-					</Text>
-					<Divider />
-					<Text className="text-black dark:text-white py-2">{assignment?.description}</Text>
+				<Divider bold className="bg-gray-300 dark:bg-secondary-400 my-2" />
+				<View className="flex-1 w-full">
+					<View className="flex w-full px-2 bg-[#f7f7fa] android:bg-white dark:bg-secondary-600 rounded-xl shadow shadow-gray-300 dark:shadow-slate-800 p-2 my-2 android:shadow-gray-900">
+						<Text className="text-black dark:text-white text-lg py-2 font-bold">
+							{t('screens.home.assignmentSheet.description')}
+						</Text>
+						<Text className="text-black dark:text-white text-md py-2">
+							{assignment?.description}
+						</Text>
+					</View>
+					<View className="flex w-full px-2 bg-[#f7f7fa] android:bg-white dark:bg-secondary-600 rounded-xl shadow shadow-gray-300 dark:shadow-slate-800 p-2 my-2 android:shadow-gray-900">
+						<View className="flex flex-row w-full items-center space-x-4 my-2">
+							<View className="w-3 h-3 bg-red-500 rounded-full" />
+							<View className="flex flex-1">
+								<Text className="text-black dark:text-white text-xs font-thin">
+									{t('screens.home.assignmentSheet.from')}
+								</Text>
+								<Text className="text-black dark:text-white font-bold text-sm" numberOfLines={1}>
+									{detail?.start_address}
+								</Text>
+							</View>
+						</View>
+						<Divider bold className="bg-gray-300 dark:bg-secondary-400 my-2" />
+						<View className="flex flex-row w-full items-center space-x-4 my-2">
+							<View className="w-3 h-3 bg-green-500 rounded-full" />
+							<View className="flex flex-1">
+								<Text className="text-black dark:text-white text-xs font-thin">
+									{t('screens.home.assignmentSheet.to')}
+								</Text>
+								<Text className="text-black dark:text-white font-bold text-sm" numberOfLines={1}>
+									{detail?.end_address}
+								</Text>
+							</View>
+						</View>
+					</View>
 				</View>
 			</View>
 		);
-	}, [assignment, t, sheetVisible]);
+	}, [assignment, t, sheetVisible, detail]);
 
 	if (!sheetVisible) {
 		return null;

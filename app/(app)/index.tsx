@@ -41,6 +41,7 @@ export default function ModalScreen() {
 	useEffect(() => {
 		getLocation();
 	}, []);
+
 	return (
 		<GestureHandlerRootView className="flex-1 flex-grow">
 			<View className="flex flex-1 items-center justify-center h-full relative">

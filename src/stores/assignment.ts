@@ -1,4 +1,5 @@
 import { selectAtom } from 'jotai/utils';
+import { MapDirectionsLegs } from 'react-native-maps-directions';
 
 import { atomWithAsyncStorage } from '@/stores/index';
 import { LocationType } from '@/stores/location';
@@ -29,6 +30,7 @@ export type AssignmentTracking = {
 	wayPoints: LocationType[];
 	assignment: ATAssignment;
 	isLoading: boolean;
+	detail: MapDirectionsLegs[0] | null;
 };
 
 export const defaultAssignmentTracking: AssignmentTracking = {
@@ -37,6 +39,7 @@ export const defaultAssignmentTracking: AssignmentTracking = {
 	wayPoints: [],
 	assignment: null,
 	isLoading: false,
+	detail: null,
 };
 
 export const assignmentTrackingAtom = atomWithAsyncStorage<AssignmentTracking>(
@@ -50,3 +53,4 @@ export const assignmentAtom = selectAtom(assignmentTrackingAtom, (p) => p.assign
 export const destinationAtom = selectAtom(assignmentTrackingAtom, (p) => p.assignment?.location);
 export const wayPointsAtom = selectAtom(assignmentTrackingAtom, (p) => p.wayPoints);
 export const isLoadingAtom = selectAtom(assignmentTrackingAtom, (p) => p.isLoading);
+export const detailAtom = selectAtom(assignmentTrackingAtom, (p) => p.detail);

@@ -10,9 +10,8 @@
 				"NODE_ENV": "development"
 			}
 		},
-		"pre": {
+		"preview": {
 			"android": {
-				"gradleCommand": ":app:assembleRelease",
 				"buildType": "apk"
 			},
 			"env": {

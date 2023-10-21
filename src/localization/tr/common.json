@@ -7,7 +7,9 @@
 					"title": "Acil İhtiyaç",
 					"description": "Açıklama",
 					"approve": "Kabul Et",
-					"reject": "Reddet"
+					"reject": "Reddet",
+					"from": "NEREDEN",
+					"to": "NEREYE"
 				}
 			},
 			"settings": {

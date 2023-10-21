@@ -29,7 +29,6 @@ class AuthService {
 		const response = await axiosInstance.post<RefreshTokenResponse>(refreshTokenUrl, {
 			refreshToken,
 		});
-		console.log('refreshToken', response);
 		return response.data;
 	}
 

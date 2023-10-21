@@ -9,30 +9,12 @@ import { darkStyle } from '@/constants/mapStyle';
 import AssignmentControls from '@/screens/home/AssignmentControls';
 import AssignmentMarker from '@/screens/home/AssignmentMarker';
 import { centerOfTurkey } from '@/services/location';
-import { AssignmentStatus, assignmentAtom } from '@/stores/assignment';
+import { AssignmentStatus, assignmentAtom, originAtom } from '@/stores/assignment';
 import { locationAtom } from '@/stores/location';
-
-// const iosOrigin = {
-// 	longitude: -122.03272188,
-// 	latitude: 37.33500926,
-// };
-// const iosDest = { latitude: 37.36488463, longitude: -122.12699926 };
-
-// const androidOrigin = {
-// 	// latitude: 39.922,
-// 	// longitude: 32.8513,
-// 	// latitude: 39.9823219,
-// 	// longitude: 32.617823,
-// 	latitude: 39.9824,
-// 	longitude: 32.6256,
-// };
-// const androidDest = {
-// 	latitude: 39.97612858457146,
-// 	longitude: 32.602658887941054,
-// };
 
 function HomeMap() {
 	const assignment = useAtomValue(assignmentAtom);
+	const origin = useAtomValue(originAtom);
 	const [mapZoom, setMapZoom] = useState<number>(15);
 	const [_locationStarted] = useState(false);
 	const location = useAtomValue(locationAtom);
@@ -57,28 +39,22 @@ function HomeMap() {
 
 	useEffect(() => {
 		if (mapRef.current) {
-			if (assignment?.location) {
+			if (assignment?.location && origin) {
 				const { latitude, longitude } = assignment.location;
+				// Set up your map component
 				if (latitude && longitude) {
-					mapRef.current.animateCamera(
-						{
-							center: {
-								latitude,
-								longitude,
-							},
-							zoom: mapZoom,
-							altitude: 10000,
-						},
-						{ duration: 1000 }
-					);
+					console.log('fitting');
+					mapRef.current.fitToCoordinates([origin, assignment.location]);
 				} else {
+					console.log('animating else');
 					animateToLocation();
 				}
 			} else {
 				animateToLocation();
+				console.log('animating else 2');
 			}
 		}
-	}, [assignment]);
+	}, [assignment, origin]);
 
 	useEffect(() => {
 		animateToLocation();
@@ -115,6 +91,7 @@ function HomeMap() {
 					}}
 					onRegionChangeComplete={async () => {
 						const coords = await mapRef?.current?.getCamera();
+						console.log('new zoom level: ', coords?.zoom);
 						coords?.zoom && setMapZoom(coords?.zoom);
 					}}
 				>

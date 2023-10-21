@@ -14,8 +14,10 @@
 		"lint": "eslint . --fix --max-warnings=0",
 		"format": "prettier . --write",
 		"build:android": "npx eas build -p android",
-		"build:pre": "env-cmd -f .env.pre npm run build:android -- --profile pre --local",
-		"build:prod": "env-cmd -f .env.production npm run build:android -- --production --local"
+		"android:pre": "env-cmd -f .env.pre npm run build:android -- --profile preview",
+		"android:pre-local": "npm run android:pre -- --local",
+		"android:prod": "env-cmd -f .env.production npm run build:android -- --profile production",
+		"android:prod-local": "npm run android:prod -- --local"
 	},
 	"lint-staged": {
 		"*.{ts,tsx}": [

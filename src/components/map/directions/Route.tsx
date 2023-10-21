@@ -41,11 +41,18 @@ export default function Route() {
 		}
 	}, 1250);
 
+	const setDetail = async (detail: AssignmentTracking['detail']) => {
+		await setAssignmentTracking((prev: AssignmentTracking) => ({
+			...prev,
+			detail,
+		}));
+	};
+
 	console.log('assignment', assignment);
 
 	useEffect(() => {
 		if (location) isOnTheLine();
 	}, [location]);
 
-	return <MapDirections setDirectionCoordinates={setDirectionCoordinates} />;
+	return <MapDirections setDirectionCoordinates={setDirectionCoordinates} setDetail={setDetail} />;
 }
