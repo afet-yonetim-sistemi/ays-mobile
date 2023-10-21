@@ -1,26 +1,23 @@
 import { useEffect } from 'react';
 
+import Route from '@/components/map/directions/Route';
 import TaskManagerService from '@/services/location/taskManager';
-import { LocationType } from '@/stores/location';
-
-type Props = {
-	destination: LocationType;
-	origin: LocationType;
-};
 
 const locationTaskManager = new TaskManagerService('location-tracking');
 
-function Directions({ destination, origin }: Props) {
+function Directions() {
 	useEffect(() => {
+		console.log('TaskManagerService started');
 		locationTaskManager.startTask();
 
 		// Clean up: Stop the background task when the component unmounts
 		return () => {
+			console.log('TaskManagerService unmounted');
 			locationTaskManager.stopTask();
 		};
 	}, []);
 
-	return <>{/* <Route origin={origin} destination={destination} /> */}</>;
+	return <Route />;
 }
 
 export default Directions;

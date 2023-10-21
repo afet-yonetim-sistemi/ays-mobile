@@ -1,8 +1,8 @@
-import BottomSheet, { BottomSheetFooter, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFooter } from '@gorhom/bottom-sheet';
 import { BottomSheetDefaultFooterProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useColorScheme } from 'nativewind';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import CircularProgress, { ProgressRef } from 'react-native-circular-progress-indicator';
@@ -20,7 +20,6 @@ import {
 	isLoadingAtom,
 } from '@/stores/assignment';
 import { locationAtom } from '@/stores/location';
-import { sleep } from '@/utils';
 
 const TIMEOUT_SECONDS = 5;
 
@@ -38,33 +37,26 @@ const AssignmentSheet = () => {
 		console.log('handleSheetChanges', index);
 	}, []);
 
-	const animationConfigs = useBottomSheetTimingConfigs({
-		duration: 1000,
-	});
-
 	const { bottomTabBarHeight } = useHeights();
 	const progressRef = useRef<ProgressRef>(null);
 	const { colorScheme } = useColorScheme();
 
-	const sheetVisible = useMemo(() => {
-		if (assignment === null) return false;
-		if (!assignment?.status) {
-			return false;
+	useLayoutEffect(() => {
+		if (progressRef.current) {
+			progressRef.current.reAnimate();
 		}
-		const statuses: AssignmentStatus[] = [AssignmentStatus.RESERVED];
-		return statuses.includes(assignment?.status);
-	}, [assignment]);
+	}, []);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (progressRef.current && assignment) {
 			progressRef.current.reAnimate();
 		}
 		if (bottomSheetRef.current) {
-			if (!sheetVisible) {
+			if (assignment === null) {
 				bottomSheetRef.current.close();
 			}
 		}
-	}, [sheetVisible]);
+	}, [assignment]);
 
 	const onApprove = async () => {
 		try {
@@ -97,11 +89,10 @@ const AssignmentSheet = () => {
 					return;
 				}
 				await assignmentService.processAssignment(AssignmentProcess.Reject);
+				await setAssignmentTracking({ ...defaultAssignmentTracking });
 				if (bottomSheetRef.current) {
 					bottomSheetRef.current.close();
 				}
-				await sleep(250);
-				await setAssignmentTracking({ ...defaultAssignmentTracking });
 			}
 		} catch (error) {
 			console.log('onReject errored', error);
@@ -136,6 +127,15 @@ const AssignmentSheet = () => {
 		),
 		[assignment, t, isLoading]
 	);
+
+	const sheetVisible = useMemo(() => {
+		if (assignment === null) return false;
+		if (!assignment?.status) {
+			return false;
+		}
+		const statuses: AssignmentStatus[] = [AssignmentStatus.RESERVED];
+		return statuses.includes(assignment?.status);
+	}, [assignment]);
 
 	const renderAssignment = useCallback(() => {
 		if (assignment === null) return;
@@ -185,12 +185,9 @@ const AssignmentSheet = () => {
 		);
 	}, [assignment, t, sheetVisible]);
 
-	if (!sheetVisible) {
-		return null;
-	}
-
 	return (
 		<StyledBottomSheet
+			index={sheetVisible ? 0 : -1}
 			ref={bottomSheetRef}
 			snapPoints={snapPoints}
 			onChange={handleSheetChanges}
@@ -198,7 +195,6 @@ const AssignmentSheet = () => {
 			handleIndicatorStyle="bg-primary-500 dark:bg-white"
 			footerComponent={renderFooter}
 			backgroundStyle="bg-white dark:bg-secondary-500"
-			animationConfigs={animationConfigs}
 		>
 			<View
 				className="flex flex-1 justify-end bg-white dark:bg-secondary-500"

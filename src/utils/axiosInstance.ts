@@ -18,6 +18,11 @@ const axiosInstance: AxiosInstance = axios.create({
 // Function that will be called to refresh authorization
 const refreshAuthLogic = async (failedRequest: any) => {
 	const { url } = failedRequest.response.config;
+
+	if (failedRequest.response.status !== 401) {
+		return Promise.reject(failedRequest);
+	}
+
 	if (url.includes(loginUrl) || url.includes(invalidateUrl)) {
 		return Promise.reject(failedRequest);
 	}

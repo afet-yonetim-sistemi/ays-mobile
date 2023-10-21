@@ -655,17 +655,9 @@ export interface components {
 			latitude: number;
 		};
 		AssignmentSearchResponse: {
-			createdUser?: string;
-			/** Format: date-time */
-			createdAt?: string;
-			updatedUser?: string;
-			/** Format: date-time */
-			updatedAt?: string;
 			id?: string;
 			description?: string;
 			location?: components['schemas']['Location'];
-			/** @enum {string} */
-			status?: 'AVAILABLE' | 'RESERVED' | 'ASSIGNED' | 'IN_PROGRESS' | 'DONE';
 		};
 		AysResponseAssignmentSearchResponse: {
 			/** Format: date-time */

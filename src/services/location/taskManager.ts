@@ -15,15 +15,16 @@ class TaskManagerService {
 	}
 
 	// Register the background task with the specified name
-	registerTask = (): void => {
+	registerTask = async (): Promise<void> => {
+		// TODO: this will make on startup
 		TaskManager.defineTask(this.taskName, async ({ data, error }) => {
 			if (error) {
 				console.error(`Error in background task '${this.taskName}':`, error);
 				return;
 			}
-
+			console.log('taskName registerTask', this.taskName);
 			if (data) {
-				console.log(`Received data for task '${this.taskName}':`, data);
+				console.log(`Received data for task '${this.taskName}'`);
 				const oldLocation = store.get(locationAtom);
 				const { locations } = data as any;
 				const lat = locations[0].coords.latitude;
@@ -46,7 +47,7 @@ class TaskManagerService {
 	// Start the background task
 	startTask = async (): Promise<void> => {
 		const isRegistered = await TaskManager.isTaskRegisteredAsync(this.taskName);
-
+		console.log(`Task registered: ${isRegistered}`);
 		if (!isRegistered) {
 			this.registerTask();
 		}

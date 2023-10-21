@@ -3,17 +3,23 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
-import { useAuth } from 'src/hooks/useAuth';
 
 import { Input } from '@/components/forms/Input';
+import { useAuth } from '@/hooks/useAuth';
 import { LoginBody } from '@/types/index';
 
 function SignIn() {
 	const {
 		control,
 		handleSubmit,
+
 		formState: { errors },
-	} = useForm<LoginBody>();
+	} = useForm<LoginBody>({
+		defaultValues: {
+			username: '930047',
+			password: '367894',
+		},
+	});
 	const { login } = useAuth();
 	const { t } = useTranslation();
 

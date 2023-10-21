@@ -5,7 +5,7 @@ import { Slot, SplashScreen } from 'expo-router';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useColorScheme } from 'react-native';
+import { AppState, useColorScheme } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -57,7 +57,17 @@ export default function RootLayout() {
 
 	const checkLocationPermissions = async () => {
 		const status = await locationService.checkLocationPermission();
-		setPermissions({ ...permissions, location: status, loaded: true });
+		setPermissions((prev) => ({ ...prev, location: status, loaded: true }));
+
+		if (status) {
+			await checkBackgroundLocationPermissions();
+		}
+	};
+
+	const checkBackgroundLocationPermissions = async () => {
+		const status = await locationService.checkBackgroundPermission();
+		console.log('checkBackgroundLocationPermissions', status);
+		setPermissions((prev) => ({ ...prev, backgroundLocation: status, loaded: true }));
 	};
 
 	const checkUserAgreement = async () => {
@@ -81,6 +91,16 @@ export default function RootLayout() {
 			SplashScreen.hideAsync();
 		}
 	}, [loaded, languageLoaded, userAgreement.loaded, permissions.loaded]);
+
+	useEffect(() => {
+		const subscription = AppState.addEventListener('change', (nextAppState: string) => {
+			if (nextAppState === 'active') {
+				checkLocationPermissions();
+			}
+
+			subscription.remove();
+		});
+	}, []);
 
 	if (!loaded && !languageLoaded) {
 		return null;

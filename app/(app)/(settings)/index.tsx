@@ -73,7 +73,7 @@ export default function ModalScreen() {
 				<Button
 					textColor="red"
 					onPress={() => {
-						console.log('logout');
+						console.log('deleteMyAccount');
 					}}
 				>
 					{t('buttons.deleteMyAccount')}

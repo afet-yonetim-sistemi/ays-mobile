@@ -14,15 +14,15 @@
 		"lint": "eslint . --fix --max-warnings=0",
 		"format": "prettier . --write",
 		"build:android": "npx eas build -p android",
-		"build:pre": "env-cmd -f .env.pre npm run build -- --profile pre --local",
-		"build:prod": "env-cmd -f .env.production npm run build -- --production --local"
+		"build:pre": "env-cmd -f .env.pre npm run build:android -- --profile pre --local",
+		"build:prod": "env-cmd -f .env.production npm run build:android -- --production --local"
 	},
 	"lint-staged": {
-		"*.{js,jsx}": [
+		"*.{ts,tsx}": [
 			"eslint --fix",
 			"git add"
 		],
-		"*.js": "eslint --cache --fix"
+		"*.ts": "eslint --cache --fix"
 	},
 	"jest": {
 		"preset": "jest-expo"
@@ -69,7 +69,8 @@
 		"react-native-screens": "~3.22.0",
 		"react-native-svg": "13.9.0",
 		"react-native-web": "~0.19.6",
-		"react-query": "^3.39.3"
+		"react-query": "^3.39.3",
+		"@react-native-async-storage/async-storage": "1.18.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.0",

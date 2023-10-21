@@ -7,6 +7,7 @@ import { snackbarAtom } from 'src/stores/ui';
 
 import { authService } from '@/services/auth';
 import { tokenService } from '@/services/token';
+import { assignmentTrackingAtom, defaultAssignmentTracking } from '@/stores/assignment';
 import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
 import { AuthUser, LoginBody } from '@/types';
 
@@ -37,6 +38,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 	const setSnackbar = useSetAtom(snackbarAtom);
 	const resetPermissions = useResetAtom(permissionsAtom);
 	const resetUserAgreement = useResetAtom(userAgreementAtom);
+	const resetAssignmentTracking = useSetAtom(assignmentTrackingAtom);
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState<AuthUser>(null);
@@ -82,6 +84,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 	const logout = async () => {
 		// TODO: invalidate test 401 dönüyor
 		const refreshToken = await tokenService.getRefreshToken();
+		console.log('refreshToken', refreshToken);
 		if (refreshToken) {
 			await authService.invalidate(refreshToken);
 		}
@@ -93,6 +96,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 	const allocateUserSettings = async () => {
 		await resetPermissions();
 		await resetUserAgreement();
+		await resetAssignmentTracking(defaultAssignmentTracking);
 	};
 
 	const useProtectedRoute = (isAuthenticated: boolean | null) => {

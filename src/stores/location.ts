@@ -3,7 +3,6 @@ import { atomWithAsyncStorage } from '@/stores/index';
 export type LocationType = {
 	latitude: number;
 	longitude: number;
-	altitude?: number;
 };
 
 export type LocationWithDistance = LocationType & {
@@ -11,4 +10,3 @@ export type LocationWithDistance = LocationType & {
 };
 
 export const locationAtom = atomWithAsyncStorage<LocationType | null>('location', null);
-export const locationCountAtom = atomWithAsyncStorage<number>('location-count', 0);

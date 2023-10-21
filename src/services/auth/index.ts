@@ -16,9 +16,13 @@ class AuthService {
 	}
 
 	async invalidate(refreshToken: string): Promise<void> {
-		await axiosInstance.post(invalidateUrl, {
-			refreshToken,
-		});
+		try {
+			await axiosInstance.post(invalidateUrl, {
+				refreshToken,
+			});
+		} catch (error) {
+			console.log('error', error);
+		}
 	}
 
 	async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {

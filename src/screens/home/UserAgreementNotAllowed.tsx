@@ -12,7 +12,7 @@ export default function UserAgreementNotAllowed() {
 	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
 	const { t } = useTranslation();
 	const [isAllowed, setIsAllowed] = React.useState(false);
-	console.log('userAgreement screen', userAgreement);
+
 	if (userAgreement.accepted) {
 		return null;
 	}

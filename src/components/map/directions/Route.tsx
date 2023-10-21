@@ -1,58 +1,51 @@
-import { useAtomValue } from 'jotai';
-import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
-import MapViewDirections, { MapDirectionsResponse } from 'react-native-maps-directions';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 
-import Colors from '@/constants/Colors';
-import ENV from '@/constants/env';
+import MapDirections from '@/components/map/directions/MapDirections';
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 import { locationService } from '@/services/location';
+import {
+	AssignmentStatus,
+	AssignmentTracking,
+	assignmentAtom,
+	assignmentTrackingAtom,
+} from '@/stores/assignment';
 import { LocationType, locationAtom } from '@/stores/location';
 
-type Props = {
-	destination: LocationType;
-	origin: LocationType;
-};
-export default function Route({ origin, destination }: Props) {
-	const location = useAtomValue(locationAtom);
-	const [directionCoordinates, setDirectionCoordinates] = useState<LocationType[]>([]);
-	const [wayPoints, setWayPoints] = useState<LocationType[]>([]);
+export default function Route() {
+	const assignment = useAtomValue(assignmentAtom);
 
-	const isOnTheLine = useDebouncedCallback(() => {
+	const location = useAtomValue(locationAtom);
+	const setAssignmentTracking = useSetAtom(assignmentTrackingAtom);
+	const [directionCoordinates, setDirectionCoordinates] = useState<LocationType[]>([]);
+
+	const isOnTheLine = useDebouncedCallback(async () => {
+		console.log('isOnTheLine called', location);
 		if (!location) return false;
+		if (assignment?.status === AssignmentStatus.IN_PROGRESS) {
+			await locationService.setUserLocation(location);
+		}
 		if (directionCoordinates.length > 0) {
 			const inLine = locationService.findDistancesForLocation(location, directionCoordinates);
 			console.log('on the line', inLine);
 			if (!inLine) {
-				setWayPoints([location]);
+				await locationService.setUserLocation(location);
+				await setAssignmentTracking((prev: AssignmentTracking) => ({
+					...prev,
+					origin: location,
+				}));
 			}
+			await setAssignmentTracking((prev: AssignmentTracking) => ({
+				...prev,
+			}));
 		}
-	}, 1000);
+	}, 1250);
+
+	console.log('assignment', assignment);
 
 	useEffect(() => {
-		if (location && directionCoordinates.length) isOnTheLine();
-	}, [location, directionCoordinates, isOnTheLine]);
-	const onReady = (result: MapDirectionsResponse) => {
-		setDirectionCoordinates(result.coordinates);
-	};
+		if (location) isOnTheLine();
+	}, [location]);
 
-	const onError = (errorMessage: string) => {
-		Alert.alert(errorMessage);
-	};
-
-	return (
-		<MapViewDirections
-			origin={origin}
-			destination={destination}
-			waypoints={wayPoints}
-			apikey={ENV.GOOGLE_API_KEY}
-			strokeWidth={7}
-			strokeColor={Colors.primary[500]}
-			mode="DRIVING"
-			onReady={onReady}
-			onError={onError}
-			precision="high"
-			resetOnChange
-		/>
-	);
+	return <MapDirections setDirectionCoordinates={setDirectionCoordinates} />;
 }

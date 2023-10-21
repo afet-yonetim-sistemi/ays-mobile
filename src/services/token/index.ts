@@ -10,6 +10,7 @@ const removeTokens = async () => {
 	// user settings
 	await SecureStore.deleteItemAsync('userAgreement');
 	// await SecureStore.deleteItemAsync('language');
+	console.log('tokens removed successfully');
 };
 
 const getRefreshToken = async () => {

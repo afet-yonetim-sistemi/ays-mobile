@@ -4,6 +4,8 @@
 			"home": {
 				"title": "Ana Sayfa",
 				"assignmentSheet": {
+					"title": "Acil İhtiyaç",
+					"description": "Açıklama",
 					"approve": "Kabul Et",
 					"reject": "Reddet"
 				}
