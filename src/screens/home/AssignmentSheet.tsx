@@ -23,7 +23,7 @@ import {
 import { locationAtom } from '@/stores/location';
 import { sleep } from '@/utils';
 
-const TIMEOUT_SECONDS = 120;
+const TIMEOUT_SECONDS = 20;
 
 const AssignmentSheet = () => {
 	const assignment = useAtomValue(assignmentAtom);
