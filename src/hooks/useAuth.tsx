@@ -1,5 +1,5 @@
 import { useRootNavigation, useRouter, useSegments } from 'expo-router';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,8 @@ import { snackbarAtom } from 'src/stores/ui';
 
 import { authService } from '@/services/auth';
 import { tokenService } from '@/services/token';
+import { assignmentTrackingAtom, defaultAssignmentTracking } from '@/stores/assignment';
+import { isAuthenticatedAtom, loadingAtom, userAtom } from '@/stores/auth';
 import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
 import { AuthUser, LoginBody } from '@/types';
 
@@ -37,9 +39,10 @@ function AuthProvider({ children }: AuthProviderProps) {
 	const setSnackbar = useSetAtom(snackbarAtom);
 	const resetPermissions = useResetAtom(permissionsAtom);
 	const resetUserAgreement = useResetAtom(userAgreementAtom);
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-	const [loading, setLoading] = useState(true);
-	const [user, setUser] = useState<AuthUser>(null);
+	const resetAssignmentTracking = useSetAtom(assignmentTrackingAtom);
+	const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
+	const [loading, setLoading] = useAtom(loadingAtom);
+	const [user, setUser] = useAtom(userAtom);
 
 	useEffect(() => {
 		checkAuthStatus();
@@ -93,6 +96,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 	const allocateUserSettings = async () => {
 		await resetPermissions();
 		await resetUserAgreement();
+		await resetAssignmentTracking(defaultAssignmentTracking);
 	};
 
 	const useProtectedRoute = (isAuthenticated: boolean | null) => {

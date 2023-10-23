@@ -1,81 +1,104 @@
-import { LocationObject } from 'expo-location';
+import { useAtomValue } from 'jotai';
 import { useColorScheme } from 'nativewind';
 import { useEffect, useRef, useState } from 'react';
-import MapView from 'react-native-maps';
+import { Platform, View } from 'react-native';
+import MapView, { PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
 
+import Directions from '@/components/map/directions';
 import { darkStyle } from '@/constants/mapStyle';
-import { locationService } from '@/services/location';
+import AssignmentControls from '@/screens/home/AssignmentControls';
+import AssignmentMarker from '@/screens/home/AssignmentMarker';
+import { centerOfTurkey } from '@/services/location';
+import { AssignmentStatus, assignmentAtom, originAtom } from '@/stores/assignment';
+import { locationAtom } from '@/stores/location';
 
 function HomeMap() {
+	const assignment = useAtomValue(assignmentAtom);
+	const origin = useAtomValue(originAtom);
+	const [mapZoom, setMapZoom] = useState<number>(15);
+	const [_locationStarted] = useState(false);
+	const location = useAtomValue(locationAtom);
 	const mapRef = useRef<MapView>(null);
-	const [location, setLocation] = useState<LocationObject | null>(null);
 	const { colorScheme } = useColorScheme();
-
-	const getLocation = async () => {
-		const location = await locationService.getCurrentLocation();
-		setLocation(location);
-	};
 
 	const animateToLocation = () => {
 		if (mapRef.current && location) {
 			mapRef.current.animateCamera(
 				{
 					center: {
-						latitude: location.coords.latitude,
-						longitude: location.coords.longitude,
+						latitude: location.latitude,
+						longitude: location.longitude,
 					},
-					zoom: 15,
-					altitude: 1000,
+					zoom: mapZoom,
+					altitude: 5000,
 				},
 				{ duration: 1000 }
 			);
 		}
 	};
 
-	// get user location
 	useEffect(() => {
-		getLocation();
+		if (mapRef.current) {
+			if (assignment?.location && origin) {
+				const { latitude, longitude } = assignment.location;
+				// Set up your map component
+				if (latitude && longitude) {
+					console.log('fitting');
+					mapRef.current.fitToCoordinates([origin, assignment.location]);
+				} else {
+					console.log('animating else');
+					animateToLocation();
+				}
+			} else {
+				animateToLocation();
+				console.log('animating else 2');
+			}
+		}
+	}, [assignment, origin]);
+
+	useEffect(() => {
+		animateToLocation();
 	}, []);
 
 	useEffect(() => {
-		if (location && mapRef.current) {
+		if (assignment?.status === AssignmentStatus.IN_PROGRESS) {
 			animateToLocation();
 		}
-	}, [location]);
+	}, [assignment, location]);
 
 	return (
 		<>
-			{/* <View className="bottom-12 left-3 absolute z-10 h-20 w-20">
-        <IconButton
-          mode="contained"
-          icon="menu"
-          size={25}
-          containerColor={Colors.secondary[500]}
-          iconColor="white"
-          onPress={onZoomInPress}
-        />
-      </View> */}
-			<MapView
-				className="w-full h-full"
-				ref={mapRef}
-				showsUserLocation
-				zoomEnabled
-				minZoomLevel={1}
-				maxZoomLevel={15}
-				customMapStyle={colorScheme === 'dark' ? darkStyle : undefined}
-				showsMyLocationButton={false}
-			>
-				{/* {location && (
-          <Marker
-            coordinate={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            }}
-            title="Konumum"
-            description="Konumum"
-          />
-        )} */}
-			</MapView>
+			<AssignmentControls />
+			<View className="flex flex-1 bg-blue-300 w-full h-full">
+				<MapView
+					className="w-full h-full z-10"
+					ref={mapRef}
+					showsUserLocation
+					zoomEnabled
+					showsIndoors
+					zoomTapEnabled
+					minZoomLevel={1}
+					maxZoomLevel={20}
+					customMapStyle={colorScheme === 'dark' ? darkStyle : undefined}
+					showsMyLocationButton={false}
+					provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+					zoomControlEnabled={false}
+					initialRegion={{
+						latitude: location?.latitude || centerOfTurkey.latitude,
+						longitude: location?.longitude || centerOfTurkey.longitude,
+						latitudeDelta: 0.0622,
+						longitudeDelta: 0.0121,
+					}}
+					onRegionChangeComplete={async () => {
+						const coords = await mapRef?.current?.getCamera();
+						console.log('new zoom level: ', coords?.zoom);
+						coords?.zoom && setMapZoom(coords?.zoom);
+					}}
+				>
+					<AssignmentMarker />
+					<Directions />
+				</MapView>
+			</View>
 		</>
 	);
 }

@@ -16,21 +16,25 @@ class AuthService {
 	}
 
 	async invalidate(refreshToken: string): Promise<void> {
-		await axiosInstance.post(invalidateUrl, {
-			refreshToken,
-		});
+		try {
+			await axiosInstance.post(invalidateUrl, {
+				refreshToken,
+			});
+		} catch (error) {
+			console.log('error', error);
+		}
 	}
 
 	async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
 		const response = await axiosInstance.post<RefreshTokenResponse>(refreshTokenUrl, {
 			refreshToken,
 		});
-		console.log('refreshToken', response);
 		return response.data;
 	}
 
 	async getUserAgreement(): Promise<boolean> {
 		const userAgreement = await SecureStore.getItemAsync('userAgreement');
+		console.log('userAgreement', !!userAgreement);
 
 		return !!userAgreement;
 	}

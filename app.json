@@ -15,9 +15,13 @@
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.ays.aysmobile",
+			"bundleIdentifier": "com.aysmobile",
 			"infoPlist": {
-				"UIBackgroundModes": ["location", "fetch"]
+				"UIBackgroundModes": ["location", "fetch"],
+				"NSLocationUsageDescription": "App requires geolocation to improve the quality of the service",
+				"NSLocationAlwaysAndWhenInUseUsageDescription": "App requires geolocation to improve the quality of the service",
+				"NSLocationWhenInUseUsageDescription": "App requires geolocation to improve the quality of the service",
+				"NSLocationAlwaysUsageDescription": "App requires geolocation to improve the quality of the service"
 			}
 		},
 		"android": {
@@ -32,12 +36,7 @@
 				"foregroundImage": "./assets/logo.jpg",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.ays.aysmobile",
-			"config": {
-				"googleMaps": {
-					"apiKey": "AIzaSyD-9yOsV22jiBjtkmgATPTX2N__0JVKjdc"
-				}
-			}
+			"package": "com.aysmobile"
 		},
 		"web": {
 			"bundler": "metro",
@@ -49,7 +48,11 @@
 			[
 				"expo-location",
 				{
-					"locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+					"locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
+					"locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location",
+					"locationAlwaysPermission": "Allow $(PRODUCT_NAME) to use your location",
+					"isIosBackgroundLocationEnabled": true,
+					"isAndroidBackgroundLocationEnabled": true
 				}
 			],
 			"expo-localization"

@@ -15,4 +15,6 @@ export const snackbarAtom = atom<SnackbarAtomType>({
 	duration: 3000,
 });
 
+export const hudAtom = atom<boolean>(false);
+
 export const languageAtom = atom<string>('tr');

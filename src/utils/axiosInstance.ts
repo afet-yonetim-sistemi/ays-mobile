@@ -2,21 +2,12 @@
 import axios, { AxiosInstance } from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
+import ENV from '@/constants/env';
 import { invalidateUrl, loginUrl, refreshTokenUrl } from '@/services/endpoints';
 import { tokenService } from '@/services/token';
 import { RefreshTokenResponse } from '@/types/index';
 
 // Create an instance of Snackbar
-
-type ENVTypes = {
-	API_URL: string;
-	TOKEN_KEY: string;
-};
-
-const ENV: ENVTypes = {
-	API_URL: process.env.EXPO_PUBLIC_API_URL ?? '',
-	TOKEN_KEY: process.env.EXPO_PUBLIC_TOKEN_KEY ?? '',
-};
 
 // Axios instance
 const axiosInstance: AxiosInstance = axios.create({
@@ -27,6 +18,11 @@ const axiosInstance: AxiosInstance = axios.create({
 // Function that will be called to refresh authorization
 const refreshAuthLogic = async (failedRequest: any) => {
 	const { url } = failedRequest.response.config;
+
+	if (failedRequest.response.status !== 401) {
+		return Promise.reject(failedRequest);
+	}
+
 	if (url.includes(loginUrl) || url.includes(invalidateUrl)) {
 		return Promise.reject(failedRequest);
 	}

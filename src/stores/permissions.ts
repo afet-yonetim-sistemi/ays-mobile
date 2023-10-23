@@ -4,11 +4,13 @@ import { atomWithReset } from 'jotai/utils';
 
 export type PermissionsAtomType = {
 	location: boolean;
+	backgroundLocation: boolean;
 	loaded: boolean;
 };
 
 export const permissionsAtom = atomWithReset<PermissionsAtomType>({
 	location: false,
+	backgroundLocation: false,
 	loaded: false,
 });
 
