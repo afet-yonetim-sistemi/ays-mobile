@@ -1,19 +1,21 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, View } from 'react-native';
-import { Button, Card, Checkbox, Switch, Text } from 'react-native-paper';
+import { Image, Platform, View } from 'react-native';
+import { Checkbox, Switch, Text } from 'react-native-paper';
 
-import UserAgreementAlert from '@/icons/UserAgreementAlert';
+import Button from '@/components/Button';
+import Card from '@/components/Card';
+import Container from '@/components/Container';
 import { authService } from '@/services/auth';
-import { userAgreementAtom } from '@/stores/permissions';
+import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
 
 export default function UserAgreementNotAllowed() {
 	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
+	const permissions = useAtomValue(permissionsAtom);
 	const { t } = useTranslation();
 	const [isAllowed, setIsAllowed] = React.useState(false);
-
-	if (userAgreement.accepted) {
+	if (permissions.location && userAgreement.accepted) {
 		return null;
 	}
 
@@ -41,27 +43,29 @@ export default function UserAgreementNotAllowed() {
 	}
 
 	return (
-		<Card elevation={4} className="w-11/12 p-4 space-y-3 bg-white dark:bg-secondary-800 m-12 py-8">
-			<View className="flex flex-col items-center justify-center space-y-2">
-				<UserAgreementAlert />
-				<Text className="text-center pt-4 pb-6 font-bold">
-					{t('screens.userAgreementNotAllowed.title')}
-				</Text>
-				<View
-					className="flex flex-row items-center justify-between p-2"
-					// onPress={onPress}
-				>
-					<View className="pr-2">
-						<RenderCheckbox />
-					</View>
-					<Text className="text-secondary-500 dark:text-white text-md" style={{ flex: 1 }}>
-						{t('screens.userAgreementNotAllowed.subtitle')}
+		<Container>
+			<Card>
+				<View className="flex flex-col items-center justify-center space-y-5 px-3">
+					<Image source={require('@/assets/images/userAgreement.png')} className="w-20 h-20 p-0" />
+					<Text className="text-center py-4 font-bold">
+						{t('screens.userAgreementNotAllowed.title')}
 					</Text>
+					<View
+						className="flex flex-row items-center justify-between p-2 pb-4"
+						// onPress={onPress}
+					>
+						<View className="pr-2">
+							<RenderCheckbox />
+						</View>
+						<Text className="text-secondary-500 dark:text-white text-md" style={{ flex: 1 }}>
+							{t('screens.userAgreementNotAllowed.subtitle')}
+						</Text>
+					</View>
+					<Button mode="contained" className="w-full" onPress={onSubmit} disabled={!isAllowed}>
+						{t('buttons.continue').toUpperCase()}
+					</Button>
 				</View>
-				<Button mode="contained" className="w-full" onPress={onSubmit} disabled={!isAllowed}>
-					{t('buttons.continue').toUpperCase()}
-				</Button>
-			</View>
-		</Card>
+			</Card>
+		</Container>
 	);
 }

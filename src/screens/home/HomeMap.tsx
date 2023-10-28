@@ -69,7 +69,7 @@ function HomeMap() {
 	return (
 		<>
 			<AssignmentControls />
-			<View className="flex flex-1 bg-blue-300 w-full h-full">
+			<View className="flex flex-1 w-full h-full">
 				<MapView
 					className="w-full h-full z-10"
 					ref={mapRef}

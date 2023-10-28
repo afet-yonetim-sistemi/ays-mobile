@@ -35,7 +35,7 @@ export function Input<T extends FieldValues>({
 			render={({ field: { onChange, onBlur, value } }) => (
 				<>
 					<TextInput
-						className="bg-white dark:bg-secondary-500"
+						className="bg-white dark:bg-card"
 						{...rest}
 						onChangeText={onChange}
 						onBlur={onBlur}

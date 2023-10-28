@@ -56,8 +56,8 @@ export default function ModalScreen() {
 					/>
 				</View>
 				{isMapAccessible && <HomeMap />}
-				<UserAgreementNotAllowed />
 				<LocationNotAllowed />
+				<UserAgreementNotAllowed />
 			</View>
 			<AssignmentSheet />
 		</GestureHandlerRootView>
