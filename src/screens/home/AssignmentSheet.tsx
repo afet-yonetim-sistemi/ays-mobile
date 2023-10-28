@@ -6,8 +6,9 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import CircularProgress, { ProgressRef } from 'react-native-circular-progress-indicator';
-import { Button, Divider } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 
+import Button from '@/components/Button';
 import StyledBottomSheet from '@/components/CustomBottomSheet';
 import { useHeights } from '@/hooks/useHeights';
 import { AssignmentProcess, assignmentService } from '@/services/assignment';
@@ -118,7 +119,7 @@ const AssignmentSheet = () => {
 					<Button
 						mode="contained"
 						onPress={onApprove}
-						className="bg-green-500 rounded"
+						className="bg-green-500"
 						textColor="white"
 						disabled={isLoading}
 					>
@@ -127,7 +128,7 @@ const AssignmentSheet = () => {
 					<Button
 						mode="contained"
 						onPress={onReject}
-						className="bg-red-500 rounded"
+						className="bg-red-500"
 						textColor="white"
 						disabled={isLoading}
 					>

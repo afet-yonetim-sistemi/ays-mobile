@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { Button } from 'react-native-paper';
 
+import Button from '@/components/Button';
 import { useAuth } from '@/hooks/useAuth';
 
 function Footer() {

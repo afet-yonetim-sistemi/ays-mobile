@@ -5,8 +5,9 @@ import { StyledComponent } from 'nativewind';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, Pressable, View } from 'react-native';
-import { Button, Divider, Text } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 
+import Button from '@/components/Button';
 import { useHeights } from '@/hooks/useHeights';
 import ProfileArea from '@/screens/drawer/ProfileArea';
 import { permissionsAtom } from '@/stores/permissions';
