@@ -48,8 +48,6 @@ export default function Route() {
 		}));
 	};
 
-	console.log('assignment', assignment);
-
 	useEffect(() => {
 		if (location) isOnTheLine();
 	}, [location]);

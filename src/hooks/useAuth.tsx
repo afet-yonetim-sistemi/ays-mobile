@@ -1,6 +1,5 @@
 import { useRootNavigation, useRouter, useSegments } from 'expo-router';
 import { useAtom, useSetAtom } from 'jotai';
-import { useResetAtom } from 'jotai/utils';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { snackbarAtom } from 'src/stores/ui';
@@ -9,7 +8,12 @@ import { authService } from '@/services/auth';
 import { tokenService } from '@/services/token';
 import { assignmentTrackingAtom, defaultAssignmentTracking } from '@/stores/assignment';
 import { isAuthenticatedAtom, loadingAtom, userAtom } from '@/stores/auth';
-import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
+import {
+	initialPermissions,
+	initialUserAgreement,
+	permissionsAtom,
+	userAgreementAtom,
+} from '@/stores/permissions';
 import { AuthUser, LoginBody } from '@/types';
 
 type AuthContextType = {
@@ -37,8 +41,8 @@ type AuthProviderProps = {
 function AuthProvider({ children }: AuthProviderProps) {
 	const { t } = useTranslation();
 	const setSnackbar = useSetAtom(snackbarAtom);
-	const resetPermissions = useResetAtom(permissionsAtom);
-	const resetUserAgreement = useResetAtom(userAgreementAtom);
+	const resetPermissions = useSetAtom(permissionsAtom);
+	const resetUserAgreement = useSetAtom(userAgreementAtom);
 	const resetAssignmentTracking = useSetAtom(assignmentTrackingAtom);
 	const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 	const [loading, setLoading] = useAtom(loadingAtom);
@@ -94,8 +98,8 @@ function AuthProvider({ children }: AuthProviderProps) {
 	};
 
 	const allocateUserSettings = async () => {
-		await resetPermissions();
-		await resetUserAgreement();
+		await resetPermissions(initialPermissions);
+		await resetUserAgreement(initialUserAgreement);
 		await resetAssignmentTracking(defaultAssignmentTracking);
 	};
 

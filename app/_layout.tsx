@@ -18,10 +18,9 @@ import {
 } from '@/constants/themes';
 import AuthProvider from '@/hooks/useAuth';
 import { getLanguage } from '@/localization/index';
-import { authService } from '@/services/auth';
 import { locationService } from '@/services/location';
 import { isAuthenticatedAtom } from '@/stores/auth';
-import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
+import { PermissionsAtomType, permissionsAtom, userAgreementAtom } from '@/stores/permissions';
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -58,7 +57,7 @@ function RootLayoutNav() {
 	});
 	const [languageLoaded, setLanguageLoaded] = useState(false);
 	const [permissions, setPermissions] = useAtom(permissionsAtom);
-	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
+	const userAgreement = useAtomValue(userAgreementAtom);
 
 	const setLocalLanguage = async () => {
 		const language = await getLanguage();
@@ -70,8 +69,11 @@ function RootLayoutNav() {
 
 	const checkLocationPermissions = async () => {
 		const status = await locationService.checkLocationPermission();
-		console.log('checkLocationPermissions', status);
-		setPermissions((prev) => ({ ...prev, location: status, loaded: true }));
+		await setPermissions((prev: PermissionsAtomType) => ({
+			...prev,
+			location: status,
+			loaded: true,
+		}));
 
 		if (status) {
 			await checkBackgroundLocationPermissions();
@@ -80,18 +82,18 @@ function RootLayoutNav() {
 
 	const checkBackgroundLocationPermissions = async () => {
 		const status = await locationService.checkBackgroundPermission();
-		console.log('checkBackgroundLocationPermissions', status);
-		setPermissions((prev) => ({ ...prev, backgroundLocation: status, loaded: true }));
+		await setPermissions((prev: PermissionsAtomType) => ({
+			...prev,
+			backgroundLocation: status,
+			loaded: true,
+		}));
 	};
-
-	const checkUserAgreement = async () => {
-		const status = await authService.getUserAgreement();
-		setUserAgreement({ ...userAgreement, accepted: !!status, loaded: true });
-	};
+	// const checkUserAgreement = async () => {
+	// 	await setUserAgreement((prev: UserAgreementAtomType) => ({ ...prev, loaded: true }));
+	// };
 
 	const initializeApp = async () => {
 		await setLocalLanguage();
-		await checkUserAgreement();
 		await checkLocationPermissions();
 	};
 
@@ -112,7 +114,7 @@ function RootLayoutNav() {
 
 	const isSplashScreenHidden = useMemo(() => {
 		return loaded && languageLoaded && userAgreement.loaded && permissions.loaded;
-	}, [loaded, languageLoaded, userAgreement.loaded, permissions.loaded]);
+	}, [loaded, languageLoaded, userAgreement, permissions]);
 
 	useEffect(() => {
 		if (isSplashScreenHidden) {
@@ -125,8 +127,10 @@ function RootLayoutNav() {
 			if (nextAppState === 'active') {
 				checkLocationPermissions();
 			}
-			subscription.remove();
 		});
+		return () => {
+			subscription.remove();
+		};
 	}, []);
 
 	if (!loaded && !languageLoaded) {

@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Linking, View } from 'react-native';
@@ -10,10 +10,10 @@ import Container from '@/components/Container';
 import { permissionsAtom } from '@/stores/permissions';
 
 export default function LocationNotAllowed() {
-	const [permissions] = useAtom(permissionsAtom);
+	const permissions = useAtomValue(permissionsAtom);
 	const { t } = useTranslation();
 
-	if (permissions.location) {
+	if (permissions.location || !permissions.loaded) {
 		return null;
 	}
 

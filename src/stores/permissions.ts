@@ -1,4 +1,4 @@
-import { atomWithReset } from 'jotai/utils';
+import { atomWithAsyncStorage } from '.';
 
 // this is the atom that will hold the state of the Permissions such as location
 
@@ -8,11 +8,16 @@ export type PermissionsAtomType = {
 	loaded: boolean;
 };
 
-export const permissionsAtom = atomWithReset<PermissionsAtomType>({
+export const initialPermissions: PermissionsAtomType = {
 	location: false,
 	backgroundLocation: false,
 	loaded: false,
-});
+};
+
+export const permissionsAtom = atomWithAsyncStorage<PermissionsAtomType>(
+	'permissions',
+	initialPermissions
+);
 
 export type UserAgreementAtomType = {
 	accepted: boolean;
@@ -20,8 +25,13 @@ export type UserAgreementAtomType = {
 	loaded: boolean;
 };
 
-export const userAgreementAtom = atomWithReset<UserAgreementAtomType>({
+export const initialUserAgreement: UserAgreementAtomType = {
 	accepted: false,
 	version: '1.0',
-	loaded: false,
-});
+	loaded: true,
+};
+
+export const userAgreementAtom = atomWithAsyncStorage<UserAgreementAtomType>(
+	'user-agreement',
+	initialUserAgreement
+);

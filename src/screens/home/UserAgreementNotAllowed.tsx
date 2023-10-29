@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Platform, View } from 'react-native';
@@ -7,15 +7,14 @@ import { Checkbox, Switch, Text } from 'react-native-paper';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Container from '@/components/Container';
-import { authService } from '@/services/auth';
-import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
+import { userAgreementAtom } from '@/stores/permissions';
 
 export default function UserAgreementNotAllowed() {
 	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
-	const permissions = useAtomValue(permissionsAtom);
 	const { t } = useTranslation();
 	const [isAllowed, setIsAllowed] = React.useState(false);
-	if (permissions.location && userAgreement.accepted) {
+
+	if (userAgreement.accepted || !userAgreement.loaded) {
 		return null;
 	}
 
@@ -24,12 +23,11 @@ export default function UserAgreementNotAllowed() {
 	};
 
 	const onSubmit = async () => {
-		setUserAgreement({
+		await setUserAgreement({
 			...userAgreement,
 			accepted: true,
 			loaded: true,
 		});
-		await authService.setUserAgreement();
 	};
 
 	function RenderCheckbox() {

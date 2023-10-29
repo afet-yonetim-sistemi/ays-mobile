@@ -10,13 +10,11 @@ const store = getDefaultStore();
 class LocationService {
 	public async checkLocationPermission() {
 		const { status } = await Location.requestForegroundPermissionsAsync();
-		console.log('status: ' + status);
 		return status === 'granted';
 	}
 
 	public async checkBackgroundPermission() {
 		const { status } = await Location.requestBackgroundPermissionsAsync();
-		console.log('status:' + status);
 		return status === 'granted';
 	}
 

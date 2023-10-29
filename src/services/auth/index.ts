@@ -1,4 +1,3 @@
-import * as SecureStore from 'expo-secure-store';
 import { axiosInstance } from 'src/utils/axiosInstance';
 
 import { invalidateUrl, loginUrl, refreshTokenUrl } from '@/services/endpoints';
@@ -30,17 +29,6 @@ class AuthService {
 			refreshToken,
 		});
 		return response.data;
-	}
-
-	async getUserAgreement(): Promise<boolean> {
-		const userAgreement = await SecureStore.getItemAsync('userAgreement');
-		console.log('userAgreement', !!userAgreement);
-
-		return !!userAgreement;
-	}
-
-	async setUserAgreement(): Promise<void> {
-		await SecureStore.setItemAsync('userAgreement', 'agreed');
 	}
 }
 
