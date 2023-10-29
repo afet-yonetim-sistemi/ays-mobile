@@ -10,6 +10,7 @@ import LocationNotAllowed from 'src/screens/home/LocationNotAllowed';
 import Colors from '@/constants/Colors';
 import AssignmentSheet from '@/screens/home/AssignmentSheet';
 import UserAgreementNotAllowed from '@/screens/home/UserAgreementNotAllowed';
+import UserAgreementSheet from '@/screens/home/UserAgreementSheet';
 import { locationService } from '@/services/location';
 import { locationAtom } from '@/stores/location';
 import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
@@ -60,6 +61,7 @@ export default function ModalScreen() {
 				<UserAgreementNotAllowed />
 			</View>
 			<AssignmentSheet />
+			<UserAgreementSheet />
 		</GestureHandlerRootView>
 	);
 }

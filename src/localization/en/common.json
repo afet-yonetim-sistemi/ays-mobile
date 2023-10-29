@@ -8,6 +8,15 @@
 					"description": "Description",
 					"approve": "Approve",
 					"reject": "Reject"
+				},
+				"userAgreementSheet": {
+					"title": "Terms of Use",
+					"listItems": {
+						"termsAndConditions": "Terms and Conditions",
+						"privacyPolicy": "Privacy Policy"
+					},
+					"approve": "I have read and agree",
+					"reject": "I disagree"
 				}
 			},
 			"settings": {
@@ -29,7 +38,10 @@
 			},
 			"userAgreementNotAllowed": {
 				"title": "Please accept the user agreement to proceed with the operations.",
-				"subtitle": "I have read and accept the user agreement."
+				"subtitle": "I have read and agree to the User Agreement.",
+				"userAgreement": "the User Agreement",
+				"continueUsage": "To continue using the application, you need to read and accept ",
+				"period": "."
 			},
 			"signIn": {
 				"title": "Welcome",

@@ -10,6 +10,15 @@
 					"reject": "Reddet",
 					"from": "NEREDEN",
 					"to": "NEREYE"
+				},
+				"userAgreementSheet": {
+					"title": "Kullanım Sözleşmesi",
+					"listItems": {
+						"termsAndConditions": "Şartlar ve Koşullar",
+						"privacyPolicy": "Gizlilik Politikası"
+					},
+					"approve": "Okudum ve Onaylıyorum",
+					"reject": "Reddediyorum"
 				}
 			},
 			"settings": {
@@ -31,7 +40,10 @@
 			},
 			"userAgreementNotAllowed": {
 				"title": "İşlemlere Devam Edebilmemiz İçin lütfen kullanıcı sözleşmesini onaylayınız",
-				"subtitle": "Kullanıcı sözleşmesini okudum ve onaylıyorum"
+				"subtitle": "Kullanıcı Sözleşmesini okudum ve onaylıyorum.",
+				"userAgreement": "Kullanıcı Sözleşmesini",
+				"continueUsage": "Uygulamayı kullanmaya devam etmek için ",
+				"period": " okuyup, onaylamanız gerekmektedir."
 			},
 			"signIn": {
 				"title": "Hoş Geldiniz",

@@ -7,19 +7,19 @@ import { Checkbox, Switch, Text } from 'react-native-paper';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Container from '@/components/Container';
-import { userAgreementAtom } from '@/stores/permissions';
+import { userAgreementAtom, userAgreementSheetAtom } from '@/stores/permissions';
 
 export default function UserAgreementNotAllowed() {
 	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
 	const { t } = useTranslation();
-	const [isAllowed, setIsAllowed] = React.useState(false);
+	const [userAgreementSheet, setUserAgreementSheet] = useAtom(userAgreementSheetAtom);
 
 	if (userAgreement.accepted || !userAgreement.loaded) {
 		return null;
 	}
 
 	const onUserAgreement = () => {
-		setIsAllowed((prev) => !prev);
+		setUserAgreementSheet((prev) => ({ ...prev, isApproved: !prev.isApproved }));
 	};
 
 	const onSubmit = async () => {
@@ -30,12 +30,21 @@ export default function UserAgreementNotAllowed() {
 		});
 	};
 
+	const openUserAgreement = async () => {
+		setUserAgreementSheet((prev) => ({ ...prev, isOpen: true }));
+	};
+
 	function RenderCheckbox() {
 		if (Platform.OS === 'android') {
-			return <Checkbox status={isAllowed ? 'checked' : 'unchecked'} onPress={onUserAgreement} />;
+			return (
+				<Checkbox
+					status={userAgreementSheet.isApproved ? 'checked' : 'unchecked'}
+					onPress={onUserAgreement}
+				/>
+			);
 		}
 		if (Platform.OS === 'ios') {
-			return <Switch value={isAllowed} onValueChange={onUserAgreement} />;
+			return <Switch value={userAgreementSheet.isApproved} onValueChange={onUserAgreement} />;
 		}
 		return null;
 	}
@@ -45,13 +54,14 @@ export default function UserAgreementNotAllowed() {
 			<Card>
 				<View className="flex flex-col items-center justify-center space-y-5 px-3">
 					<Image source={require('@/assets/images/userAgreement.png')} className="w-20 h-20 p-0" />
-					<Text className="text-center py-4 font-bold">
-						{t('screens.userAgreementNotAllowed.title')}
+					<Text className="text-secondary-500 dark:text-white text-md">
+						{t('screens.userAgreementNotAllowed.continueUsage')}
+						<Text className="underline" onPress={openUserAgreement}>
+							{t('screens.userAgreementNotAllowed.userAgreement')}
+						</Text>
+						{t('screens.userAgreementNotAllowed.period')}
 					</Text>
-					<View
-						className="flex flex-row items-center justify-between p-2 pb-4"
-						// onPress={onPress}
-					>
+					<View className="flex flex-row items-center justify-between p-2 pb-4">
 						<View className="pr-2">
 							<RenderCheckbox />
 						</View>
@@ -59,8 +69,13 @@ export default function UserAgreementNotAllowed() {
 							{t('screens.userAgreementNotAllowed.subtitle')}
 						</Text>
 					</View>
-					<Button mode="contained" className="w-full" onPress={onSubmit} disabled={!isAllowed}>
-						{t('buttons.continue').toUpperCase()}
+					<Button
+						mode="contained"
+						className="w-full"
+						onPress={onSubmit}
+						disabled={!userAgreementSheet.isApproved}
+					>
+						{t('buttons.continue')}
 					</Button>
 				</View>
 			</Card>

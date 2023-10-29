@@ -1,3 +1,5 @@
+import { atom } from 'jotai';
+
 import { atomWithAsyncStorage } from '.';
 
 // this is the atom that will hold the state of the Permissions such as location
@@ -35,3 +37,8 @@ export const userAgreementAtom = atomWithAsyncStorage<UserAgreementAtomType>(
 	'user-agreement',
 	initialUserAgreement
 );
+
+export const userAgreementSheetAtom = atom({
+	isOpen: false,
+	isApproved: false,
+});
