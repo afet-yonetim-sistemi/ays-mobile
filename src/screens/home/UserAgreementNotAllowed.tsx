@@ -1,4 +1,6 @@
-import { useAtom } from 'jotai';
+import { PermissionStatus } from 'expo-location';
+import { router } from 'expo-router';
+import { useAtom, useAtomValue } from 'jotai';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Platform, View } from 'react-native';
@@ -7,14 +9,20 @@ import { Checkbox, Switch, Text } from 'react-native-paper';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Container from '@/components/Container';
-import { userAgreementAtom, userAgreementSheetAtom } from '@/stores/permissions';
+import { permissionsAtom, userAgreementAtom, userAgreementSheetAtom } from '@/stores/permissions';
 
 export default function UserAgreementNotAllowed() {
-	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
 	const { t } = useTranslation();
+	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
 	const [userAgreementSheet, setUserAgreementSheet] = useAtom(userAgreementSheetAtom);
+	const permissions = useAtomValue(permissionsAtom);
 
-	if (userAgreement.accepted || !userAgreement.loaded) {
+	if (
+		userAgreement.accepted ||
+		!userAgreement.loaded ||
+		permissions.location !== PermissionStatus.GRANTED ||
+		permissions.backgroundLocation !== PermissionStatus.GRANTED
+	) {
 		return null;
 	}
 
@@ -31,7 +39,7 @@ export default function UserAgreementNotAllowed() {
 	};
 
 	const openUserAgreement = async () => {
-		setUserAgreementSheet((prev) => ({ ...prev, isOpen: true }));
+		router.push('/userAgreement');
 	};
 
 	function RenderCheckbox() {

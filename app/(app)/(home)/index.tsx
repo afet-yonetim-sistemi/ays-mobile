@@ -1,4 +1,5 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { PermissionStatus } from 'expo-location';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import { View } from 'react-native';
@@ -10,12 +11,11 @@ import LocationNotAllowed from 'src/screens/home/LocationNotAllowed';
 import Colors from '@/constants/Colors';
 import AssignmentSheet from '@/screens/home/AssignmentSheet';
 import UserAgreementNotAllowed from '@/screens/home/UserAgreementNotAllowed';
-import UserAgreementSheet from '@/screens/home/UserAgreementSheet';
 import { locationService } from '@/services/location';
 import { locationAtom } from '@/stores/location';
 import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
 
-export default function ModalScreen() {
+export default function Home() {
 	const navigation = useNavigation();
 	const permissions = useAtomValue(permissionsAtom);
 	const [location, setLocation] = useAtom(locationAtom);
@@ -25,7 +25,11 @@ export default function ModalScreen() {
 	};
 
 	const isMapAccessible = useMemo(
-		() => permissions.location && userAgreement.accepted && location,
+		() =>
+			permissions.location === PermissionStatus.GRANTED &&
+			permissions.backgroundLocation === PermissionStatus.GRANTED &&
+			userAgreement.accepted &&
+			location,
 		[permissions, userAgreement, location]
 	);
 
@@ -61,7 +65,6 @@ export default function ModalScreen() {
 				<UserAgreementNotAllowed />
 			</View>
 			<AssignmentSheet />
-			<UserAgreementSheet />
 		</GestureHandlerRootView>
 	);
 }

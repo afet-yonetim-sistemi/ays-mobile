@@ -4,7 +4,7 @@ import CustomDrawer from 'src/screens/drawer';
 
 export const unstable_settings = {
 	// Ensure any route can link back to `/`
-	initialRouteName: 'settings',
+	initialRouteName: '(home)',
 };
 
 export default function TabLayout() {
@@ -16,7 +16,7 @@ export default function TabLayout() {
 			defaultStatus="closed"
 		>
 			<Drawer.Screen
-				name="index"
+				name="(home)"
 				options={{
 					title: t('screens.home.title'),
 				}}

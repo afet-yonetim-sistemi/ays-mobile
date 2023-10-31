@@ -1,5 +1,6 @@
 import { useRootNavigation, useRouter, useSegments } from 'expo-router';
 import { useAtom, useSetAtom } from 'jotai';
+import { useResetAtom } from 'jotai/utils';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { snackbarAtom } from 'src/stores/ui';
@@ -13,6 +14,7 @@ import {
 	initialUserAgreement,
 	permissionsAtom,
 	userAgreementAtom,
+	userAgreementSheetAtom,
 } from '@/stores/permissions';
 import { AuthUser, LoginBody } from '@/types';
 
@@ -44,6 +46,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 	const resetPermissions = useSetAtom(permissionsAtom);
 	const resetUserAgreement = useSetAtom(userAgreementAtom);
 	const resetAssignmentTracking = useSetAtom(assignmentTrackingAtom);
+	const resetUserAgreementSheet = useResetAtom(userAgreementSheetAtom);
 	const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 	const [loading, setLoading] = useAtom(loadingAtom);
 	const [user, setUser] = useAtom(userAtom);
@@ -101,6 +104,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 		await resetPermissions(initialPermissions);
 		await resetUserAgreement(initialUserAgreement);
 		await resetAssignmentTracking(defaultAssignmentTracking);
+		await resetUserAgreementSheet();
 	};
 
 	const useProtectedRoute = (isAuthenticated: boolean | null) => {

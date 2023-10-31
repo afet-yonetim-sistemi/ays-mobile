@@ -7,15 +7,30 @@ import { LocationType, LocationWithDistance, locationAtom } from '@/stores/locat
 import { axiosInstance } from '@/utils/axiosInstance';
 
 const store = getDefaultStore();
+
+export type TPermissionStatus = Location.PermissionStatus | 'DO_NOT_ASK_AGAIN';
 class LocationService {
-	public async checkLocationPermission() {
-		const { status } = await Location.requestForegroundPermissionsAsync();
-		return status === 'granted';
+	public async requestLocationPermission(): Promise<TPermissionStatus> {
+		const { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
+		return canAskAgain ? status : 'DO_NOT_ASK_AGAIN';
 	}
 
-	public async checkBackgroundPermission() {
-		const { status } = await Location.requestBackgroundPermissionsAsync();
-		return status === 'granted';
+	public async requestBackgroundPermission(): Promise<TPermissionStatus> {
+		const { status, canAskAgain } = await Location.requestBackgroundPermissionsAsync();
+		console.log(status, canAskAgain);
+		return canAskAgain ? status : 'DO_NOT_ASK_AGAIN';
+	}
+
+	public async getLocationPermissions(): Promise<TPermissionStatus[]> {
+		const { status: foreground, canAskAgain: foregroundCanAskAgain } =
+			await Location.getForegroundPermissionsAsync();
+		const { status: background, canAskAgain: backgroundCanAskAgain } =
+			await Location.getBackgroundPermissionsAsync();
+
+		return [
+			foregroundCanAskAgain ? foreground : 'DO_NOT_ASK_AGAIN',
+			backgroundCanAskAgain ? background : 'DO_NOT_ASK_AGAIN',
+		];
 	}
 
 	public async getCurrentLocation() {

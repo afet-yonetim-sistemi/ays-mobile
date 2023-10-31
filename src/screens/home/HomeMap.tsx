@@ -43,15 +43,12 @@ function HomeMap() {
 				const { latitude, longitude } = assignment.location;
 				// Set up your map component
 				if (latitude && longitude) {
-					console.log('fitting');
 					mapRef.current.fitToCoordinates([origin, assignment.location]);
 				} else {
-					console.log('animating else');
 					animateToLocation();
 				}
 			} else {
 				animateToLocation();
-				console.log('animating else 2');
 			}
 		}
 	}, [assignment, origin]);
@@ -71,7 +68,7 @@ function HomeMap() {
 			<AssignmentControls />
 			<View className="flex flex-1 w-full h-full">
 				<MapView
-					className="w-full h-full z-10"
+					className="w-full h-full z-11"
 					ref={mapRef}
 					showsUserLocation
 					zoomEnabled

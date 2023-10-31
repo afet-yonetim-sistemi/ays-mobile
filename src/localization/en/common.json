@@ -67,7 +67,8 @@
 			"cancel": "Cancel",
 			"save": "Save",
 			"ok": "OK",
-			"deleteMyAccount": "Delete My Account"
+			"deleteMyAccount": "Delete My Account",
+			"share": "Share"
 		},
 		"errors": {
 			"required": "{{field}} field is required."

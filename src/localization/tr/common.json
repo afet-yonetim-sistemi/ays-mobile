@@ -69,7 +69,8 @@
 			"cancel": "İptal",
 			"save": "Kaydet",
 			"ok": "Tamam",
-			"deleteMyAccount": "Hesabımı Sil"
+			"deleteMyAccount": "Hesabımı Sil",
+			"share": "Paylaş"
 		},
 		"errors": {
 			"required": "{{field}} alanı zorunludur."

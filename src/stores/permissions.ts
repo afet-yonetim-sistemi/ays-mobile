@@ -1,18 +1,19 @@
-import { atom } from 'jotai';
+import { PermissionStatus } from 'expo-location';
+import { atomWithReset } from 'jotai/utils';
 
 import { atomWithAsyncStorage } from '.';
 
 // this is the atom that will hold the state of the Permissions such as location
 
 export type PermissionsAtomType = {
-	location: boolean;
-	backgroundLocation: boolean;
+	location: PermissionStatus;
+	backgroundLocation: PermissionStatus;
 	loaded: boolean;
 };
 
 export const initialPermissions: PermissionsAtomType = {
-	location: false,
-	backgroundLocation: false,
+	location: PermissionStatus.UNDETERMINED,
+	backgroundLocation: PermissionStatus.UNDETERMINED,
 	loaded: false,
 };
 
@@ -38,7 +39,7 @@ export const userAgreementAtom = atomWithAsyncStorage<UserAgreementAtomType>(
 	initialUserAgreement
 );
 
-export const userAgreementSheetAtom = atom({
+export const userAgreementSheetAtom = atomWithReset({
 	isOpen: false,
 	isApproved: false,
 });

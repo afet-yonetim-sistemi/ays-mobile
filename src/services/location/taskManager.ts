@@ -3,6 +3,7 @@ import * as TaskManager from 'expo-task-manager';
 import { getDefaultStore } from 'jotai';
 
 import { locationAtom } from '@/stores/location';
+import { permissionsAtom } from '@/stores/permissions';
 
 const store = getDefaultStore();
 
@@ -46,13 +47,21 @@ class TaskManagerService {
 
 	// Start the background task
 	startTask = async (): Promise<void> => {
-		const isRegistered = await TaskManager.isTaskRegisteredAsync(this.taskName);
-		console.log(`Task registered: ${isRegistered}`);
-		if (!isRegistered) {
-			this.registerTask();
-		}
-
 		try {
+			const isRegistered = await TaskManager.isTaskRegisteredAsync(this.taskName);
+			console.log(`Task registered: ${isRegistered}`);
+			if (!isRegistered) {
+				this.registerTask();
+			}
+			const permissions = store.get(permissionsAtom);
+			console.log(`Task permissions:`, permissions);
+			if (
+				permissions.location === Location.PermissionStatus.DENIED ||
+				permissions.backgroundLocation === Location.PermissionStatus.DENIED
+			) {
+				console.log('Permissions denied');
+				return;
+			}
 			// Start the background task with the specified name
 			await Location.startLocationUpdatesAsync(this.taskName, {
 				accuracy: Location.Accuracy.Balanced,

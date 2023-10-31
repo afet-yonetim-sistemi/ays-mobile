@@ -1,6 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { PermissionStatus } from 'expo-location';
 import { Slot, SplashScreen } from 'expo-router';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo, useState } from 'react';
@@ -29,7 +30,7 @@ export {
 
 export const unstable_settings = {
 	// Ensure that reloading on `/modal` keeps a back button present.
-	initialRouteName: '(app)/index',
+	initialRouteName: '(app)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -68,33 +69,61 @@ function RootLayoutNav() {
 	};
 
 	const checkLocationPermissions = async () => {
-		const status = await locationService.checkLocationPermission();
+		const permissions = await locationService.getLocationPermissions();
+		console.log({ permissions });
+		await setPermissions((prev: PermissionsAtomType) => ({
+			...prev,
+			loaded: true,
+			location: permissions[0],
+			backgroundLocation: permissions[1],
+		}));
+	};
+
+	const requestLocationPermissions = async () => {
+		const locationPermissions = await locationService.getLocationPermissions();
+
+		const goToSettings = locationPermissions.filter(
+			(permission) => permission === 'DO_NOT_ASK_AGAIN'
+		);
+
+		if (goToSettings.length) {
+			await setPermissions((prev: PermissionsAtomType) => ({
+				...prev,
+				loaded: true,
+				location: locationPermissions[0],
+				backgroundLocation: locationPermissions[1],
+			}));
+			return;
+		}
+
+		const status = await locationService.requestLocationPermission();
 		await setPermissions((prev: PermissionsAtomType) => ({
 			...prev,
 			location: status,
-			loaded: true,
+			loaded: status !== PermissionStatus.GRANTED,
 		}));
 
 		if (status) {
-			await checkBackgroundLocationPermissions();
+			await requestBackgroundLocationPermissions();
 		}
 	};
 
-	const checkBackgroundLocationPermissions = async () => {
-		const status = await locationService.checkBackgroundPermission();
+	const requestBackgroundLocationPermissions = async () => {
+		const status = await locationService.requestBackgroundPermission();
 		await setPermissions((prev: PermissionsAtomType) => ({
 			...prev,
 			backgroundLocation: status,
 			loaded: true,
 		}));
 	};
+
 	// const checkUserAgreement = async () => {
 	// 	await setUserAgreement((prev: UserAgreementAtomType) => ({ ...prev, loaded: true }));
 	// };
 
 	const initializeApp = async () => {
 		await setLocalLanguage();
-		await checkLocationPermissions();
+		await requestLocationPermissions();
 	};
 
 	useEffect(() => {
