@@ -8,7 +8,6 @@ import { IconButton } from 'react-native-paper';
 import HomeMap from 'src/screens/home/HomeMap';
 import LocationNotAllowed from 'src/screens/home/LocationNotAllowed';
 
-import Colors from '@/constants/Colors';
 import AssignmentSheet from '@/screens/home/AssignmentSheet';
 import UserAgreementNotAllowed from '@/screens/home/UserAgreementNotAllowed';
 import { locationService } from '@/services/location';
@@ -54,8 +53,8 @@ export default function Home() {
 					<IconButton
 						mode="contained"
 						icon="menu"
-						size={25}
-						containerColor={Colors.secondary[500]}
+						size={24}
+						className="bg-primary-500 rounded-xl"
 						iconColor="white"
 						onPress={toggleDrawer}
 					/>

@@ -3,6 +3,11 @@
 		"screens": {
 			"home": {
 				"title": "Home",
+				"assignmentControls": {
+					"searchAssignment": "Search Assignment",
+					"startAssignment": "Start Assignment",
+					"completeAssignment": "Complete Assignment"
+				},
 				"assignmentSheet": {
 					"title": "Urgent Need",
 					"description": "Description",
@@ -71,7 +76,8 @@
 			"share": "Share"
 		},
 		"errors": {
-			"required": "{{field}} field is required."
+			"required": "{{field}} field is required.",
+			"unknown": "An unknown error occurred."
 		},
 		"languages": {
 			"tr": "Turkish",

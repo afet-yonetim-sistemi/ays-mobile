@@ -1,10 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React, { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, View } from 'react-native';
-import { ActivityIndicator, IconButton } from 'react-native-paper';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import { IconProps } from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
 
+import Button from '@/components/Button';
 import { useHeights } from '@/hooks/useHeights';
 import { AssignmentProcess, assignmentService } from '@/services/assignment';
 import {
@@ -16,32 +18,42 @@ import {
 	isLoadingAtom,
 } from '@/stores/assignment';
 import { locationAtom } from '@/stores/location';
+import { snackbarAtom } from '@/stores/ui';
 
 const AssignmentControls = () => {
+	const setSnackbar = useSetAtom(snackbarAtom);
 	const { bottomTabBarHeight } = useHeights();
 	const assignment = useAtomValue(assignmentAtom);
 	const isLoading = useAtomValue(isLoadingAtom);
 	const setAssignmentTracking = useSetAtom(assignmentTrackingAtom);
 	const location = useAtomValue(locationAtom);
-
+	const { t } = useTranslation();
 	const onSearch = useCallback(async () => {
-		if (location) {
-			const { response } = await assignmentService.searchAssignment({
-				latitude: location.latitude,
-				longitude: location.longitude,
-			});
-			if (response) {
-				await setAssignmentTracking((prev: AssignmentTracking) => ({
-					...prev,
-					origin: location,
-					assignment: {
-						...response,
-						status: AssignmentStatus.RESERVED,
-					},
-				}));
+		try {
+			if (location) {
+				const { response } = await assignmentService.searchAssignment({
+					latitude: location.latitude,
+					longitude: location.longitude,
+				});
+				if (response) {
+					await setAssignmentTracking((prev: AssignmentTracking) => ({
+						...prev,
+						origin: location,
+						assignment: {
+							...response,
+							status: AssignmentStatus.RESERVED,
+						},
+					}));
+				}
+			} else {
+				console.log('no location');
 			}
-		} else {
-			console.log('no location');
+		} catch (error: any) {
+			setSnackbar({
+				visible: true,
+				message: error.message ?? t('errors.unknown'),
+				severity: 'error',
+			});
 		}
 	}, [location]);
 
@@ -56,8 +68,13 @@ const AssignmentControls = () => {
 					status: AssignmentStatus.IN_PROGRESS,
 				},
 			}));
-		} catch (error) {
+		} catch (error: any) {
 			console.log('onStart errored', error);
+			setSnackbar({
+				visible: true,
+				message: error.message ?? t('errors.unknown'),
+				severity: 'error',
+			});
 			await setAssignmentTracking((prev: AssignmentTracking) => ({
 				...prev,
 				assignment: null,
@@ -70,8 +87,14 @@ const AssignmentControls = () => {
 			await assignmentService.processAssignment(AssignmentProcess.Complete);
 			await setAssignmentTracking(defaultAssignmentTracking);
 			Alert.alert('Teşekkürler', 'İyi bir iş başardınız');
-		} catch (error) {
+		} catch (error: any) {
 			console.log('onComplete errored', error);
+			console.log('onStart errored', error);
+			setSnackbar({
+				visible: true,
+				message: error.message ?? t('errors.unknown'),
+				severity: 'error',
+			});
 		}
 	};
 
@@ -95,7 +118,7 @@ const AssignmentControls = () => {
 
 	const className: string = useMemo(() => {
 		if (!assignment) {
-			return 'bg-secondary-500';
+			return 'bg-primary-500';
 		}
 		switch (assignment.status) {
 			case AssignmentStatus.ASSIGNED:
@@ -131,6 +154,20 @@ const AssignmentControls = () => {
 		return true;
 	}, [assignment]);
 
+	const buttonText = useMemo(() => {
+		if (assignment) {
+			switch (assignment.status) {
+				case AssignmentStatus.ASSIGNED:
+					return t('screens.home.assignmentControls.startAssignment');
+				case AssignmentStatus.IN_PROGRESS:
+					return t('screens.home.assignmentControls.completeAssignment');
+				default:
+					return t('screens.home.assignmentControls.searchAssignment');
+			}
+		}
+		return t('screens.home.assignmentControls.searchAssignment');
+	}, [assignment, t]);
+
 	if (!isButtonVisible) return null;
 
 	return (
@@ -140,14 +177,14 @@ const AssignmentControls = () => {
 				paddingBottom: bottomTabBarHeight,
 			}}
 		>
-			<IconButton
+			<Button
 				mode="contained"
-				icon={(props) => renderIcon(props)}
-				size={40}
-				iconColor="white"
+				icon={(props) => renderIcon({ ...props, size: 24, color: 'white' })}
 				onPress={buttonAction}
-				className={className}
-			/>
+				className={className + ' android:mb-2'}
+			>
+				<Text className="text-white font-bold text-base pl-5">{buttonText}</Text>
+			</Button>
 		</View>
 	);
 };

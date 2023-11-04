@@ -3,6 +3,11 @@
 		"screens": {
 			"home": {
 				"title": "Ana Sayfa",
+				"assignmentControls": {
+					"searchAssignment": "Atama Ara",
+					"startAssignment": "Atamayı Başlat",
+					"completeAssignment": "Atamayı Tamamla"
+				},
 				"assignmentSheet": {
 					"title": "Acil İhtiyaç",
 					"description": "Açıklama",
