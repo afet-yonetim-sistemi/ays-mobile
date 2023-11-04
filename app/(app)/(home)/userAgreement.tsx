@@ -69,8 +69,8 @@ const UserAgreement = () => {
 	const iconColor = useAppearance(Colors.primary[500], colors.white);
 
 	return (
-		<View className="flex flex-1 bg-white dark:bg-secondary-500 py-2">
-			<View className="flex-grow">
+		<View className="flex flex-1 bg-white dark:bg-secondary-500 py-2 items-center">
+			<View className="flex-grow w-full">
 				<DocumentList
 					items={listItems}
 					selectedIndex={openedIndex}
@@ -78,12 +78,17 @@ const UserAgreement = () => {
 					iconColor={iconColor}
 				/>
 			</View>
-			<View className="flex px-4 justify-center space-y-1 pt-1 android:pb-2 ios:pb-4">
-				<Button mode="contained" textColor="white" onPress={onApprove}>
-					{t('screens.home.userAgreementSheet.approve')}
+			<View className="flex flex-row px-4 w-4/5 pt-1 android:pb-3 ios:pb-5 items-center justify-between">
+				<Button
+					mode="contained"
+					textColor={useAppearance(colors.red[500], colors.white)}
+					onPress={onClose}
+					className="bg-gray-100 dark:bg-card"
+				>
+					{t('screens.home.userAgreementSheet.reject').toLocaleUpperCase()}
 				</Button>
-				<Button mode="text" textColor="red" onPress={onClose}>
-					{t('screens.home.userAgreementSheet.reject')}
+				<Button mode="contained" textColor="white" onPress={onApprove}>
+					{t('screens.home.userAgreementSheet.approve').toLocaleUpperCase()}
 				</Button>
 			</View>
 		</View>

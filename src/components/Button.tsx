@@ -5,7 +5,7 @@ type Props = ButtonProps;
 
 export default function Button(props: Props) {
 	return (
-		<RNButton {...props} className="rounded-md">
+		<RNButton {...props} className="rounded-full">
 			{props.children}
 		</RNButton>
 	);

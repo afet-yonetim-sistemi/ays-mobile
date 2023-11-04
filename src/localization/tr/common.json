@@ -17,8 +17,8 @@
 						"termsAndConditions": "Şartlar ve Koşullar",
 						"privacyPolicy": "Gizlilik Politikası"
 					},
-					"approve": "Okudum ve Onaylıyorum",
-					"reject": "Reddediyorum"
+					"approve": "Kabul Et",
+					"reject": "Reddet"
 				}
 			},
 			"settings": {
