@@ -42,13 +42,12 @@ export default function Route() {
 	}, 1250);
 
 	const setDetail = async (detail: AssignmentTracking['detail']) => {
+		console.log('setDetail called');
 		await setAssignmentTracking((prev: AssignmentTracking) => ({
 			...prev,
 			detail,
 		}));
 	};
-
-	console.log('assignment', assignment);
 
 	useEffect(() => {
 		if (location) isOnTheLine();

@@ -3,9 +3,32 @@
 		"screens": {
 			"home": {
 				"title": "Home",
+				"userSupportStatus": {
+					"beReady": "Be Ready"
+				},
+				"assignmentControls": {
+					"searchAssignment": "Search Assignment",
+					"startAssignment": "Start Assignment",
+					"completeAssignment": "Complete Assignment"
+				},
+				"fields": {
+					"confirmText": "Reason"
+				},
 				"assignmentSheet": {
 					"title": "Urgent Need",
 					"description": "Description",
+					"approve": "Approve",
+					"reject": "Reject",
+					"cancel": "Cancel",
+					"continue": "Continue",
+					"cancelAssignment": "Cancel Assignment"
+				},
+				"userAgreementSheet": {
+					"title": "Terms of Use",
+					"listItems": {
+						"termsAndConditions": "Terms and Conditions",
+						"privacyPolicy": "Privacy Policy"
+					},
 					"approve": "Approve",
 					"reject": "Reject"
 				}
@@ -29,7 +52,10 @@
 			},
 			"userAgreementNotAllowed": {
 				"title": "Please accept the user agreement to proceed with the operations.",
-				"subtitle": "I have read and accept the user agreement."
+				"subtitle": "I have read and agree to the User Agreement.",
+				"userAgreement": "the User Agreement",
+				"continueUsage": "To continue using the application, you need to read and accept ",
+				"period": "."
 			},
 			"signIn": {
 				"title": "Welcome",
@@ -55,10 +81,14 @@
 			"cancel": "Cancel",
 			"save": "Save",
 			"ok": "OK",
-			"deleteMyAccount": "Delete My Account"
+			"deleteMyAccount": "Delete My Account",
+			"share": "Share"
 		},
 		"errors": {
-			"required": "{{field}} field is required."
+			"required": "{{field}} field is required.",
+			"minLength": "{{field}} field must be at least {{length}} characters.",
+			"maxLength": "{{field}} field must be at most {{length}} characters.",
+			"unknown": "An unknown error occurred."
 		},
 		"languages": {
 			"tr": "Turkish",

@@ -1,12 +1,14 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { PermissionStatus } from 'expo-location';
 import { router } from 'expo-router';
 import { useAtom } from 'jotai';
 import { StyledComponent } from 'nativewind';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, Pressable, View } from 'react-native';
-import { Button, Divider, Text } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 
+import Button from '@/components/Button';
 import { useHeights } from '@/hooks/useHeights';
 import ProfileArea from '@/screens/drawer/ProfileArea';
 import { permissionsAtom } from '@/stores/permissions';
@@ -59,7 +61,12 @@ export default function ModalScreen() {
 						<Text className="text-secondary-500 dark:text-white text-md">
 							{t('screens.settings.applicationSettings.location')}
 						</Text>
-						<AllowedIcon allowed={permissions.location} />
+						<AllowedIcon
+							allowed={
+								permissions.location === PermissionStatus.GRANTED &&
+								permissions.backgroundLocation === PermissionStatus.GRANTED
+							}
+						/>
 					</View>
 				</View>
 				<Divider />

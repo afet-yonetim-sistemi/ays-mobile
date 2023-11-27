@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Menu } from 'react-native-paper';
+import { Menu } from 'react-native-paper';
+
+import Button from '@/components/Button';
 
 export interface SelectOption {
 	value: string;

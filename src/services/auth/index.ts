@@ -1,12 +1,25 @@
-import * as SecureStore from 'expo-secure-store';
-import { axiosInstance } from 'src/utils/axiosInstance';
+import axiosInstance from 'src/utils/axiosInstance';
 
-import { invalidateUrl, loginUrl, refreshTokenUrl } from '@/services/endpoints';
-import { LoginBody, LoginResponse, RefreshTokenResponse } from '@/types/index';
+import {
+	invalidateUrl,
+	loginUrl,
+	refreshTokenUrl,
+	userSelfUpdateUrl,
+	userSelfUrl,
+} from '@/services/endpoints';
+import {
+	DefaultResponse,
+	LoginBody,
+	LoginResponse,
+	RefreshTokenResponse,
+	UserSelfResponse,
+	UserSelfSupportStatusRequest,
+} from '@/types/index';
 
 class AuthService {
 	async login(body: LoginBody): Promise<LoginResponse> {
 		try {
+			console.log('request body', body, axiosInstance);
 			const response = await axiosInstance.post<LoginResponse>(loginUrl, body);
 			return response.data;
 		} catch (error) {
@@ -32,15 +45,31 @@ class AuthService {
 		return response.data;
 	}
 
-	async getUserAgreement(): Promise<boolean> {
-		const userAgreement = await SecureStore.getItemAsync('userAgreement');
-		console.log('userAgreement', !!userAgreement);
+	async setUserSelf(): Promise<UserSelfResponse['response']> {
+		const response = await axiosInstance.get(userSelfUrl);
+		const user = response.data as UserSelfResponse;
 
-		return !!userAgreement;
+		return user.response;
 	}
 
-	async setUserAgreement(): Promise<void> {
-		await SecureStore.setItemAsync('userAgreement', 'agreed');
+	async setUserSelfStatus({
+		supportStatus,
+	}: UserSelfSupportStatusRequest): Promise<DefaultResponse['isSuccess']> {
+		try {
+			const response = await axiosInstance.put(userSelfUpdateUrl, {
+				supportStatus,
+			});
+			const user = response.data as DefaultResponse;
+
+			if (!user.isSuccess) {
+				throw new Error('Kullanıcı durumu güncellenemedi');
+			}
+			console.log('user', user);
+			return user.isSuccess;
+		} catch (error) {
+			console.log('error', JSON.stringify(error));
+			return Promise.reject(error);
+		}
 	}
 }
 

@@ -1,6 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { PermissionStatus } from 'expo-location';
 import { Slot, SplashScreen } from 'expo-router';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo, useState } from 'react';
@@ -10,6 +11,7 @@ import { PaperProvider } from 'react-native-paper';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Snackbar from '@/components/Snackbar';
+import { Modal } from '@/components/modal';
 import {
 	darkTheme,
 	lightTheme,
@@ -18,10 +20,9 @@ import {
 } from '@/constants/themes';
 import AuthProvider from '@/hooks/useAuth';
 import { getLanguage } from '@/localization/index';
-import { authService } from '@/services/auth';
 import { locationService } from '@/services/location';
 import { isAuthenticatedAtom } from '@/stores/auth';
-import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
+import { PermissionsAtomType, permissionsAtom, userAgreementAtom } from '@/stores/permissions';
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -30,7 +31,7 @@ export {
 
 export const unstable_settings = {
 	// Ensure that reloading on `/modal` keeps a back button present.
-	initialRouteName: '(app)/index',
+	initialRouteName: '(app)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -58,7 +59,7 @@ function RootLayoutNav() {
 	});
 	const [languageLoaded, setLanguageLoaded] = useState(false);
 	const [permissions, setPermissions] = useAtom(permissionsAtom);
-	const [userAgreement, setUserAgreement] = useAtom(userAgreementAtom);
+	const userAgreement = useAtomValue(userAgreementAtom);
 
 	const setLocalLanguage = async () => {
 		const language = await getLanguage();
@@ -69,30 +70,61 @@ function RootLayoutNav() {
 	};
 
 	const checkLocationPermissions = async () => {
-		const status = await locationService.checkLocationPermission();
-		console.log('checkLocationPermissions', status);
-		setPermissions((prev) => ({ ...prev, location: status, loaded: true }));
+		const permissions = await locationService.getLocationPermissions();
+		console.log({ permissions });
+		await setPermissions((prev: PermissionsAtomType) => ({
+			...prev,
+			loaded: true,
+			location: permissions[0],
+			backgroundLocation: permissions[1],
+		}));
+	};
+
+	const requestLocationPermissions = async () => {
+		const locationPermissions = await locationService.getLocationPermissions();
+
+		const goToSettings = locationPermissions.filter(
+			(permission) => permission === 'DO_NOT_ASK_AGAIN'
+		);
+
+		if (goToSettings.length) {
+			await setPermissions((prev: PermissionsAtomType) => ({
+				...prev,
+				loaded: true,
+				location: locationPermissions[0],
+				backgroundLocation: locationPermissions[1],
+			}));
+			return;
+		}
+
+		const status = await locationService.requestLocationPermission();
+		await setPermissions((prev: PermissionsAtomType) => ({
+			...prev,
+			location: status,
+			loaded: status !== PermissionStatus.GRANTED,
+		}));
 
 		if (status) {
-			await checkBackgroundLocationPermissions();
+			await requestBackgroundLocationPermissions();
 		}
 	};
 
-	const checkBackgroundLocationPermissions = async () => {
-		const status = await locationService.checkBackgroundPermission();
-		console.log('checkBackgroundLocationPermissions', status);
-		setPermissions((prev) => ({ ...prev, backgroundLocation: status, loaded: true }));
+	const requestBackgroundLocationPermissions = async () => {
+		const status = await locationService.requestBackgroundPermission();
+		await setPermissions((prev: PermissionsAtomType) => ({
+			...prev,
+			backgroundLocation: status,
+			loaded: true,
+		}));
 	};
 
-	const checkUserAgreement = async () => {
-		const status = await authService.getUserAgreement();
-		setUserAgreement({ ...userAgreement, accepted: !!status, loaded: true });
-	};
+	// const checkUserAgreement = async () => {
+	// 	await setUserAgreement((prev: UserAgreementAtomType) => ({ ...prev, loaded: true }));
+	// };
 
 	const initializeApp = async () => {
 		await setLocalLanguage();
-		await checkUserAgreement();
-		await checkLocationPermissions();
+		await requestLocationPermissions();
 	};
 
 	useEffect(() => {
@@ -112,7 +144,7 @@ function RootLayoutNav() {
 
 	const isSplashScreenHidden = useMemo(() => {
 		return loaded && languageLoaded && userAgreement.loaded && permissions.loaded;
-	}, [loaded, languageLoaded, userAgreement.loaded, permissions.loaded]);
+	}, [loaded, languageLoaded, userAgreement, permissions]);
 
 	useEffect(() => {
 		if (isSplashScreenHidden) {
@@ -125,8 +157,10 @@ function RootLayoutNav() {
 			if (nextAppState === 'active') {
 				checkLocationPermissions();
 			}
-			subscription.remove();
 		});
+		return () => {
+			subscription.remove();
+		};
 	}, []);
 
 	if (!loaded && !languageLoaded) {
@@ -137,6 +171,7 @@ function RootLayoutNav() {
 		<ThemeProvider value={colorScheme === 'dark' ? navigationDarkTheme : navigationLightTheme}>
 			<PaperProvider theme={colorScheme === 'dark' ? darkTheme : lightTheme}>
 				<Snackbar />
+				<Modal />
 				<Slot />
 			</PaperProvider>
 		</ThemeProvider>

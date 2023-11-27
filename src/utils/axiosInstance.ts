@@ -28,6 +28,10 @@ const refreshAuthLogic = async (failedRequest: any) => {
 	}
 
 	const oldRefreshToken = await tokenService.getRefreshToken();
+
+	if (!oldRefreshToken) {
+		return Promise.reject(failedRequest);
+	}
 	try {
 		const { data } = await axiosInstance.post<RefreshTokenResponse['response']>(
 			refreshTokenUrl,
@@ -97,19 +101,21 @@ axiosInstance.interceptors.request.use(
 
 		return config;
 	},
-	(error) =>
-		// Handle request error
-		Promise.reject(error)
+	(error) => {
+		console.log('error', error);
+		return Promise.reject(error);
+	}
 );
 
 axiosInstance.interceptors.response.use(
 	(response) => response,
 
-	(error) =>
-		// Handle response error
-		Promise.reject(error)
+	(error) => {
+		console.log('error', error);
+		return Promise.reject(error);
+	}
 );
 
 // handle axios errors
 
-export { axiosInstance };
+export default axiosInstance;

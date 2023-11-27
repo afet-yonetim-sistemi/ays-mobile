@@ -3,6 +3,11 @@
 		"screens": {
 			"home": {
 				"title": "Ana Sayfa",
+				"assignmentControls": {
+					"searchAssignment": "Atama Ara",
+					"startAssignment": "Atamayı Başlat",
+					"completeAssignment": "Atamayı Tamamla"
+				},
 				"assignmentSheet": {
 					"title": "Acil İhtiyaç",
 					"description": "Açıklama",
@@ -10,6 +15,15 @@
 					"reject": "Reddet",
 					"from": "NEREDEN",
 					"to": "NEREYE"
+				},
+				"userAgreementSheet": {
+					"title": "Kullanım Sözleşmesi",
+					"listItems": {
+						"termsAndConditions": "Şartlar ve Koşullar",
+						"privacyPolicy": "Gizlilik Politikası"
+					},
+					"approve": "Kabul Et",
+					"reject": "Reddet"
 				}
 			},
 			"settings": {
@@ -31,7 +45,10 @@
 			},
 			"userAgreementNotAllowed": {
 				"title": "İşlemlere Devam Edebilmemiz İçin lütfen kullanıcı sözleşmesini onaylayınız",
-				"subtitle": "Kullanıcı sözleşmesini okudum ve onaylıyorum"
+				"subtitle": "Kullanıcı Sözleşmesini okudum ve onaylıyorum.",
+				"userAgreement": "Kullanıcı Sözleşmesini",
+				"continueUsage": "Uygulamayı kullanmaya devam etmek için ",
+				"period": " okuyup, onaylamanız gerekmektedir."
 			},
 			"signIn": {
 				"title": "Hoş Geldiniz",
@@ -57,7 +74,8 @@
 			"cancel": "İptal",
 			"save": "Kaydet",
 			"ok": "Tamam",
-			"deleteMyAccount": "Hesabımı Sil"
+			"deleteMyAccount": "Hesabımı Sil",
+			"share": "Paylaş"
 		},
 		"errors": {
 			"required": "{{field}} alanı zorunludur."

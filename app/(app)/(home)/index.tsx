@@ -1,4 +1,5 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { PermissionStatus } from 'expo-location';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import { View } from 'react-native';
@@ -7,14 +8,13 @@ import { IconButton } from 'react-native-paper';
 import HomeMap from 'src/screens/home/HomeMap';
 import LocationNotAllowed from 'src/screens/home/LocationNotAllowed';
 
-import Colors from '@/constants/Colors';
 import AssignmentSheet from '@/screens/home/AssignmentSheet';
 import UserAgreementNotAllowed from '@/screens/home/UserAgreementNotAllowed';
 import { locationService } from '@/services/location';
 import { locationAtom } from '@/stores/location';
 import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
 
-export default function ModalScreen() {
+export default function Home() {
 	const navigation = useNavigation();
 	const permissions = useAtomValue(permissionsAtom);
 	const [location, setLocation] = useAtom(locationAtom);
@@ -24,7 +24,11 @@ export default function ModalScreen() {
 	};
 
 	const isMapAccessible = useMemo(
-		() => permissions.location && userAgreement.accepted && location,
+		() =>
+			permissions.location === PermissionStatus.GRANTED &&
+			permissions.backgroundLocation === PermissionStatus.GRANTED &&
+			userAgreement.accepted &&
+			location,
 		[permissions, userAgreement, location]
 	);
 
@@ -49,15 +53,15 @@ export default function ModalScreen() {
 					<IconButton
 						mode="contained"
 						icon="menu"
-						size={25}
-						containerColor={Colors.secondary[500]}
+						size={24}
+						className="bg-primary-500 rounded-xl"
 						iconColor="white"
 						onPress={toggleDrawer}
 					/>
 				</View>
 				{isMapAccessible && <HomeMap />}
-				<UserAgreementNotAllowed />
 				<LocationNotAllowed />
+				<UserAgreementNotAllowed />
 			</View>
 			<AssignmentSheet />
 		</GestureHandlerRootView>

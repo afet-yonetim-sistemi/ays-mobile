@@ -1,26 +1,34 @@
 import BottomSheet, { BottomSheetFooter, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
 import { BottomSheetDefaultFooterProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types';
+import { PermissionStatus } from 'expo-location';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useColorScheme } from 'nativewind';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import CircularProgress, { ProgressRef } from 'react-native-circular-progress-indicator';
-import { Button, Divider } from 'react-native-paper';
+import { Divider, IconButton } from 'react-native-paper';
 
+import Button from '@/components/Button';
 import StyledBottomSheet from '@/components/CustomBottomSheet';
+import { useAuth } from '@/hooks/useAuth';
 import { useHeights } from '@/hooks/useHeights';
 import { AssignmentProcess, assignmentService } from '@/services/assignment';
 import {
 	AssignmentStatus,
 	AssignmentTracking,
 	assignmentAtom,
+	assignmentDetailAtom,
 	assignmentTrackingAtom,
 	defaultAssignmentTracking,
 	detailAtom,
+	isDetailOpenAtom,
 	isLoadingAtom,
+	isWaitingForConfirmationAtom,
 } from '@/stores/assignment';
 import { locationAtom } from '@/stores/location';
+import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
+import { modalAtom } from '@/stores/ui';
 import { sleep } from '@/utils';
 
 const TIMEOUT_SECONDS = 20;
@@ -40,6 +48,13 @@ const AssignmentSheet = () => {
 		console.log('handleSheetChanges', index);
 	}, []);
 
+	const permissions = useAtomValue(permissionsAtom);
+	const userAgreement = useAtomValue(userAgreementAtom);
+	const isWaitingForConfirmation = useAtomValue(isWaitingForConfirmationAtom);
+	const setModal = useSetAtom(modalAtom);
+	const isDetailOpen = useAtomValue(isDetailOpenAtom);
+	const { updateProfile } = useAuth();
+	const assignmentDetail = useAtomValue(assignmentDetailAtom);
 	const animationConfigs = useBottomSheetTimingConfigs({
 		duration: 1000,
 	});
@@ -53,18 +68,35 @@ const AssignmentSheet = () => {
 		if (!assignment?.status) {
 			return false;
 		}
+		if (isWaitingForConfirmation) {
+			return true;
+		}
 		const statuses: AssignmentStatus[] = [AssignmentStatus.RESERVED];
 		return statuses.includes(assignment?.status);
-	}, [assignment]);
+	}, [assignment, isWaitingForConfirmation]);
+
+	const isAssignmentCancelable = useMemo(() => {
+		if (assignment === null) return false;
+		const statuses: AssignmentStatus[] = [AssignmentStatus.ASSIGNED, AssignmentStatus.IN_PROGRESS];
+
+		return statuses.includes(assignment?.status) && isWaitingForConfirmation;
+	}, [assignment, isWaitingForConfirmation]);
+
+	const isMapAccessible = useMemo(
+		() =>
+			permissions.location === PermissionStatus.GRANTED &&
+			permissions.backgroundLocation === PermissionStatus.GRANTED &&
+			userAgreement.accepted &&
+			location,
+		[permissions, userAgreement, location]
+	);
 
 	useEffect(() => {
 		if (progressRef.current && assignment) {
 			progressRef.current.reAnimate();
 		}
-		if (bottomSheetRef.current) {
-			if (!sheetVisible) {
-				bottomSheetRef.current.close();
-			}
+		if (!sheetVisible) {
+			closeBottomSheet();
 		}
 	}, [sheetVisible]);
 
@@ -78,14 +110,14 @@ const AssignmentSheet = () => {
 				setAssignmentTracking((prev: AssignmentTracking) => ({
 					...prev,
 					origin: location,
+					isWaitingForConfirmation: false,
 					assignment: {
 						...prev.assignment,
 						status: AssignmentStatus.ASSIGNED,
 					},
 				}));
-				if (bottomSheetRef.current) {
-					bottomSheetRef.current.close();
-				}
+				await assignmentService.setAssignment();
+				closeBottomSheet();
 			}
 		} catch (error) {
 			console.log('onApprove errored', error);
@@ -99,9 +131,7 @@ const AssignmentSheet = () => {
 					return;
 				}
 				await assignmentService.processAssignment(AssignmentProcess.Reject);
-				if (bottomSheetRef.current) {
-					bottomSheetRef.current.close();
-				}
+				closeBottomSheet();
 				await sleep(250);
 				await setAssignmentTracking({ ...defaultAssignmentTracking });
 			}
@@ -111,32 +141,116 @@ const AssignmentSheet = () => {
 		}
 	};
 
+	const onCancel = async (reason: string) => {
+		try {
+			if (assignment && sheetVisible) {
+				if (!isAssignmentCancelable) {
+					return;
+				}
+				await assignmentService.cancelAssignment({
+					reason,
+				});
+				await updateProfile();
+				closeBottomSheet();
+				await sleep(250);
+				await setAssignmentTracking({ ...defaultAssignmentTracking });
+			}
+		} catch (error) {
+			console.log('onCancel errored', error);
+			await setAssignmentTracking((prev: AssignmentTracking) => ({ ...prev, assignment: null }));
+		}
+	};
+
+	const closeBottomSheet = async () => {
+		if (bottomSheetRef.current) {
+			bottomSheetRef.current.forceClose();
+			await setAssignmentTracking((prev: AssignmentTracking) => ({
+				...prev,
+				isDetailOpen: false,
+			}));
+		}
+	};
+
+	const onCancelModal = async () => {
+		setModal((prev) => ({
+			...prev,
+			visible: true,
+			type: 'prompt',
+			title: t('screens.home.assignmentSheet.cancelAssignment'),
+			onConfirm(confirmInput) {
+				confirmInput && onCancel(confirmInput);
+			},
+			confirmInputProps: {
+				label: t('screens.home.fields.confirmText'),
+				rules: {
+					required: t('errors.required', {
+						field: t('screens.home.fields.confirmText'),
+					}),
+					minLength: {
+						value: 40,
+						message: t('errors.minLength', {
+							field: t('screens.home.fields.confirmText'),
+							length: 40,
+						}),
+					},
+					maxLength: {
+						value: 512,
+						message: t('errors.maxLength', {
+							field: t('screens.home.assignmentSheet.cancelReason'),
+							length: 512,
+						}),
+					},
+				},
+			},
+			multiline: true,
+		}));
+	};
+
+	const onContinue = async () => {
+		closeBottomSheet();
+		await setAssignmentTracking((prev: AssignmentTracking) => ({
+			...prev,
+			isWaitingForConfirmation: false,
+		}));
+	};
+
 	const renderFooter = useCallback(
 		(props: BottomSheetDefaultFooterProps) => (
 			<BottomSheetFooter {...props} bottomInset={bottomTabBarHeight}>
-				<View className="flex flex-row justify-center space-x-3 mt-1 android:pb-2">
-					<Button
-						mode="contained"
-						onPress={onApprove}
-						className="bg-green-500 rounded"
-						textColor="white"
-						disabled={isLoading}
-					>
-						{t('screens.home.assignmentSheet.approve')}
-					</Button>
-					<Button
-						mode="contained"
-						onPress={onReject}
-						className="bg-red-500 rounded"
-						textColor="white"
-						disabled={isLoading}
-					>
-						{t('screens.home.assignmentSheet.reject')}
-					</Button>
-				</View>
+				{isWaitingForConfirmation && (
+					<View className="flex flex-row justify-center space-x-3 mt-1 android:pb-2">
+						<Button
+							mode="contained"
+							onPress={isAssignmentCancelable ? onContinue : onApprove}
+							className="bg-green-500"
+							textColor="white"
+							disabled={isLoading}
+						>
+							{t(`screens.home.assignmentSheet.${isAssignmentCancelable ? 'continue' : 'approve'}`)}
+						</Button>
+						<Button
+							mode="contained"
+							onPress={isAssignmentCancelable ? onCancelModal : onReject}
+							className="bg-red-500"
+							textColor="white"
+							disabled={isLoading}
+						>
+							{t(`screens.home.assignmentSheet.${isAssignmentCancelable ? 'cancel' : 'reject'}`)}
+						</Button>
+					</View>
+				)}
 			</BottomSheetFooter>
 		),
-		[assignment, t, isLoading]
+		[
+			assignment,
+			t,
+			isLoading,
+			isAssignmentCancelable,
+			bottomTabBarHeight,
+			assignmentDetail,
+			isDetailOpen,
+			isWaitingForConfirmation,
+		]
 	);
 
 	const renderAssignment = useCallback(() => {
@@ -153,7 +267,7 @@ const AssignmentSheet = () => {
 							{/* <Text className="text-black dark:text-white">Ad Soyad</Text> */}
 						</View>
 					</View>
-					{sheetVisible && (
+					{sheetVisible && assignment.status === AssignmentStatus.RESERVED ? (
 						<CircularProgress
 							ref={progressRef}
 							value={0}
@@ -174,10 +288,25 @@ const AssignmentSheet = () => {
 							onAnimationComplete={onReject}
 							progressValueColor={colorScheme === 'dark' ? 'white' : 'black'}
 						/>
+					) : (
+						<IconButton icon="close" onPress={closeBottomSheet} />
 					)}
 				</View>
 				<Divider bold className="bg-gray-300 dark:bg-secondary-400 my-2" />
 				<View className="flex-1 w-full">
+					{assignmentDetail && (
+						<View className="flex w-full px-2 bg-[#f7f7fa] android:bg-white dark:bg-secondary-600 rounded-xl shadow shadow-gray-300 dark:shadow-slate-800 p-2 my-2 android:shadow-gray-900">
+							<Text className="text-black dark:text-white text-lg py-2 font-bold">
+								{assignmentDetail.firstName + ' ' + assignmentDetail.lastName}
+							</Text>
+							<Text className="text-black dark:text-white text-md py-2">
+								{assignmentDetail?.phoneNumber
+									? assignmentDetail?.phoneNumber?.countryCode +
+									  assignmentDetail?.phoneNumber?.lineNumber
+									: ''}
+							</Text>
+						</View>
+					)}
 					<View className="flex w-full px-2 bg-[#f7f7fa] android:bg-white dark:bg-secondary-600 rounded-xl shadow shadow-gray-300 dark:shadow-slate-800 p-2 my-2 android:shadow-gray-900">
 						<Text className="text-black dark:text-white text-lg py-2 font-bold">
 							{t('screens.home.assignmentSheet.description')}
@@ -214,11 +343,15 @@ const AssignmentSheet = () => {
 				</View>
 			</View>
 		);
-	}, [assignment, t, sheetVisible, detail]);
+	}, [assignment, t, sheetVisible, detail, closeBottomSheet]);
 
-	if (!sheetVisible) {
-		return null;
-	}
+	useEffect(() => {
+		if (isDetailOpen) {
+			if (bottomSheetRef.current) {
+				bottomSheetRef.current.snapToIndex(0);
+			}
+		}
+	}, [isDetailOpen]);
 
 	return (
 		<StyledBottomSheet
@@ -230,6 +363,7 @@ const AssignmentSheet = () => {
 			footerComponent={renderFooter}
 			backgroundStyle="bg-white dark:bg-secondary-500"
 			animationConfigs={animationConfigs}
+			index={(sheetVisible && isMapAccessible) || isDetailOpen ? 0 : -1}
 		>
 			<View
 				className="flex flex-1 justify-end bg-white dark:bg-secondary-500"

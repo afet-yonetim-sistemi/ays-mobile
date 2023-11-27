@@ -9,7 +9,7 @@ function ProfileArea() {
 
 	const fullName = useMemo(() => {
 		if (user) {
-			return `${user.userFirstName} ${user.userLastName}`;
+			return `${user.firstName} ${user.lastName}`;
 		}
 		return '';
 	}, [user]);

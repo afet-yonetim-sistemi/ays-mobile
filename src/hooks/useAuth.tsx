@@ -9,7 +9,13 @@ import { authService } from '@/services/auth';
 import { tokenService } from '@/services/token';
 import { assignmentTrackingAtom, defaultAssignmentTracking } from '@/stores/assignment';
 import { isAuthenticatedAtom, loadingAtom, userAtom } from '@/stores/auth';
-import { permissionsAtom, userAgreementAtom } from '@/stores/permissions';
+import {
+	initialPermissions,
+	initialUserAgreement,
+	permissionsAtom,
+	userAgreementAtom,
+	userAgreementSheetAtom,
+} from '@/stores/permissions';
 import { AuthUser, LoginBody } from '@/types';
 
 type AuthContextType = {
@@ -18,6 +24,7 @@ type AuthContextType = {
 	login: (body: LoginBody) => void;
 	logout: () => void;
 	user: AuthUser;
+	updateProfile: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -26,6 +33,7 @@ const AuthContext = createContext<AuthContextType>({
 	login: () => {},
 	logout: () => {},
 	user: null,
+	updateProfile: () => Promise.resolve(),
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -37,9 +45,10 @@ type AuthProviderProps = {
 function AuthProvider({ children }: AuthProviderProps) {
 	const { t } = useTranslation();
 	const setSnackbar = useSetAtom(snackbarAtom);
-	const resetPermissions = useResetAtom(permissionsAtom);
-	const resetUserAgreement = useResetAtom(userAgreementAtom);
+	const resetPermissions = useSetAtom(permissionsAtom);
+	const resetUserAgreement = useSetAtom(userAgreementAtom);
 	const resetAssignmentTracking = useSetAtom(assignmentTrackingAtom);
+	const resetUserAgreementSheet = useResetAtom(userAgreementSheetAtom);
 	const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 	const [loading, setLoading] = useAtom(loadingAtom);
 	const [user, setUser] = useAtom(userAtom);
@@ -94,9 +103,10 @@ function AuthProvider({ children }: AuthProviderProps) {
 	};
 
 	const allocateUserSettings = async () => {
-		await resetPermissions();
-		await resetUserAgreement();
+		await resetPermissions(initialPermissions);
+		await resetUserAgreement(initialUserAgreement);
 		await resetAssignmentTracking(defaultAssignmentTracking);
+		await resetUserAgreementSheet();
 	};
 
 	const useProtectedRoute = (isAuthenticated: boolean | null) => {
@@ -135,6 +145,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 	};
 
 	useEffect(() => {
+		console.log('isAuthenticated', isAuthenticated);
 		handleUser();
 	}, [isAuthenticated]);
 
@@ -146,10 +157,24 @@ function AuthProvider({ children }: AuthProviderProps) {
 				await handleRefreshToken();
 				return;
 			}
-			setUser(user);
+			if (!user) {
+				setUser(null);
+			} else {
+				const newUser = await authService.setUserSelf();
+				setUser(newUser);
+			}
 		} catch (error) {
 			console.error('Error getting user from token:', error);
 			setUser(null);
+		}
+	};
+
+	const updateProfile = async () => {
+		try {
+			const newUser = await authService.setUserSelf();
+			setUser(newUser);
+		} catch (error) {
+			console.error('Error updating user profile:', error);
 		}
 	};
 
@@ -189,6 +214,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 				logout,
 				loading,
 				user,
+				updateProfile,
 			}}
 		>
 			{!loading && children}
