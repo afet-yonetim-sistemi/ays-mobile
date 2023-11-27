@@ -3,7 +3,7 @@ import { MapDirectionsLegs } from 'react-native-maps-directions';
 
 import { atomWithAsyncStorage } from '@/stores/index';
 import { LocationType } from '@/stores/location';
-import { Assignment } from '@/types';
+import { Assignment, AssignmentGetResponse } from '@/types';
 
 export enum AssignmentStatus {
 	AVAILABLE = 'AVAILABLE',
@@ -31,6 +31,9 @@ export type AssignmentTracking = {
 	assignment: ATAssignment;
 	isLoading: boolean;
 	detail: MapDirectionsLegs[0] | null;
+	assignmentDetail: AssignmentGetResponse['response'] | null;
+	isWaitingForConfirmation: boolean;
+	isDetailOpen: boolean;
 };
 
 export const defaultAssignmentTracking: AssignmentTracking = {
@@ -40,6 +43,9 @@ export const defaultAssignmentTracking: AssignmentTracking = {
 	assignment: null,
 	isLoading: false,
 	detail: null,
+	assignmentDetail: null,
+	isWaitingForConfirmation: false,
+	isDetailOpen: false,
 };
 
 export const assignmentTrackingAtom = atomWithAsyncStorage<AssignmentTracking>(
@@ -54,3 +60,9 @@ export const destinationAtom = selectAtom(assignmentTrackingAtom, (p) => p.assig
 export const wayPointsAtom = selectAtom(assignmentTrackingAtom, (p) => p.wayPoints);
 export const isLoadingAtom = selectAtom(assignmentTrackingAtom, (p) => p.isLoading);
 export const detailAtom = selectAtom(assignmentTrackingAtom, (p) => p.detail);
+export const assignmentDetailAtom = selectAtom(assignmentTrackingAtom, (p) => p.assignmentDetail);
+export const isWaitingForConfirmationAtom = selectAtom(
+	assignmentTrackingAtom,
+	(p) => p.isWaitingForConfirmation
+);
+export const isDetailOpenAtom = selectAtom(assignmentTrackingAtom, (p) => p.isDetailOpen);

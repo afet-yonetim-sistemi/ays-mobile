@@ -2,7 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode';
 
 import ENV from '@/constants/env';
-import { AuthUser } from '@/types/index';
+import { UserToken } from '@/types/index';
 
 const removeTokens = async () => {
 	await SecureStore.deleteItemAsync(ENV.TOKEN_KEY);
@@ -15,6 +15,7 @@ const removeTokens = async () => {
 
 const getRefreshToken = async () => {
 	const refreshToken = await SecureStore.getItemAsync(`${ENV.TOKEN_KEY}_refresh`);
+	console.log('refreshToken', refreshToken);
 	return refreshToken;
 };
 
@@ -38,10 +39,10 @@ const setTokens = async (accessToken: string, refreshToken: string) => {
 	}
 };
 
-const getUserFromToken = async (): Promise<AuthUser> => {
+const getUserFromToken = async (): Promise<UserToken> => {
 	const accessToken = await SecureStore.getItemAsync(ENV.TOKEN_KEY);
 	if (!accessToken) return null;
-	const decoded = jwt_decode(accessToken) as AuthUser;
+	const decoded = jwt_decode(accessToken) as UserToken;
 	return decoded;
 };
 
@@ -55,7 +56,7 @@ const checkRefreshTokenIsExpired = async () => {
 	const refreshToken = await getRefreshToken();
 	if (!refreshToken) return true;
 	const now = Date.now() / 1000;
-	const decoded = jwt_decode(refreshToken) as AuthUser;
+	const decoded = jwt_decode(refreshToken) as UserToken;
 	console.log('refresh token will expire in minutes', decoded ? (decoded?.exp - now) / 60 : null);
 
 	if (!decoded) {

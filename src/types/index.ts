@@ -21,19 +21,26 @@ export type AssignmentSearchResponse = components['schemas']['AysResponseAssignm
 export type AssignmentApproveRequest = components['schemas']['AssignmentSearchRequest'];
 export type AssignmentApproveResponse =
 	components['schemas']['AysResponseAssignmentSearchResponse'];
+export type AssignmentSummaryResponse =
+	components['schemas']['AysResponseAssignmentSummaryResponse'];
+export type AssignmentGetResponse = components['schemas']['AysResponseAssignmentUserResponse'];
+export type AssignmentCancelRequest = components['schemas']['AssignmentCancelRequest'];
 
 export type UserLocationRequest = components['schemas']['UserLocationSaveRequest'];
+export type UserSelfResponse = components['schemas']['AysResponseUserSelfResponse'];
+export type UserSelfSupportStatusRequest = components['schemas']['UserSupportStatusUpdateRequest'];
 
-export type AuthUser = {
+export type DefaultResponse = components['schemas']['AysResponseVoid'];
+export type AuthUser = UserSelfResponse['response'] | null;
+
+export type UserToken = {
 	jti: string;
 	iss: string;
 	iat: number;
 	exp: number;
 	institutionId: string;
-	userLastName: string;
 	roles: string[];
 	userType: string;
-	userFirstName: string;
 	userId: string;
 	username: string;
 } | null;

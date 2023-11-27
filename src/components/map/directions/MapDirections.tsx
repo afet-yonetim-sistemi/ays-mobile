@@ -17,6 +17,7 @@ export default function MapDirections({ setDirectionCoordinates, setDetail }: Pr
 	const destination = useAtomValue(destinationAtom);
 
 	const onReady = (result: MapDirectionsResponse) => {
+		console.log('onReady called');
 		setDetail(result.legs[0]);
 		setDirectionCoordinates(result.coordinates);
 	};

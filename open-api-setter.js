@@ -3,7 +3,7 @@ require('dotenv').config();
 // eslint-disable-next-line no-undef
 const OPEN_API_URL = process.env.OPEN_API_URL;
 
-const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const generateTypes = async () => {
 	const outputFile = './src/types/OpenAPITypes.ts';

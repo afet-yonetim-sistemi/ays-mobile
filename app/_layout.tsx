@@ -11,6 +11,7 @@ import { PaperProvider } from 'react-native-paper';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Snackbar from '@/components/Snackbar';
+import { Modal } from '@/components/modal';
 import {
 	darkTheme,
 	lightTheme,
@@ -170,6 +171,7 @@ function RootLayoutNav() {
 		<ThemeProvider value={colorScheme === 'dark' ? navigationDarkTheme : navigationLightTheme}>
 			<PaperProvider theme={colorScheme === 'dark' ? darkTheme : lightTheme}>
 				<Snackbar />
+				<Modal />
 				<Slot />
 			</PaperProvider>
 		</ThemeProvider>

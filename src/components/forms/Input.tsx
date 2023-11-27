@@ -5,7 +5,7 @@ import { HelperText, TextInput, TextInputProps } from 'react-native-paper';
 
 import customColors from '@/constants/Colors';
 
-interface InputProps<T extends FieldValues> extends TextInputProps {
+export interface InputProps<T extends FieldValues> extends TextInputProps {
 	name: keyof T;
 	control: UseControllerProps<T>['control'];
 	rules?: Partial<UseControllerProps<T>['rules']>;

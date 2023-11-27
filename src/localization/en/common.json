@@ -3,16 +3,25 @@
 		"screens": {
 			"home": {
 				"title": "Home",
+				"userSupportStatus": {
+					"beReady": "Be Ready"
+				},
 				"assignmentControls": {
 					"searchAssignment": "Search Assignment",
 					"startAssignment": "Start Assignment",
 					"completeAssignment": "Complete Assignment"
 				},
+				"fields": {
+					"confirmText": "Reason"
+				},
 				"assignmentSheet": {
 					"title": "Urgent Need",
 					"description": "Description",
 					"approve": "Approve",
-					"reject": "Reject"
+					"reject": "Reject",
+					"cancel": "Cancel",
+					"continue": "Continue",
+					"cancelAssignment": "Cancel Assignment"
 				},
 				"userAgreementSheet": {
 					"title": "Terms of Use",
@@ -77,6 +86,8 @@
 		},
 		"errors": {
 			"required": "{{field}} field is required.",
+			"minLength": "{{field}} field must be at least {{length}} characters.",
+			"maxLength": "{{field}} field must be at most {{length}} characters.",
 			"unknown": "An unknown error occurred."
 		},
 		"languages": {

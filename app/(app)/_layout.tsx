@@ -1,6 +1,9 @@
 import { Drawer } from 'expo-router/drawer';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import CustomDrawer from 'src/screens/drawer';
+
+import { assignmentService } from '@/services/assignment';
 
 export const unstable_settings = {
 	// Ensure any route can link back to `/`
@@ -9,6 +12,14 @@ export const unstable_settings = {
 
 export default function TabLayout() {
 	const { t } = useTranslation();
+
+	const getAssignmentSummary = async () => {
+		await assignmentService.getAssignmentSummary();
+	};
+
+	useEffect(() => {
+		getAssignmentSummary();
+	}, []);
 	return (
 		<Drawer
 			screenOptions={{ headerShown: false }}
