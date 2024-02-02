@@ -4,7 +4,7 @@ import { getDefaultStore } from 'jotai';
 
 import { userLocationUrl } from '@/services/endpoints';
 import { LocationType, LocationWithDistance, locationAtom } from '@/stores/location';
-import { axiosInstance } from '@/utils/axiosInstance';
+import axiosInstance from '@/utils/axiosInstance';
 
 const store = getDefaultStore();
 
